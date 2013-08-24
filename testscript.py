@@ -52,7 +52,7 @@ def testoutput(testnum,result):
 #Test suite 1 - validpoly
 if verbose:
     print "---------------------------------------"
-    print "Test suite 1 - valid poly              "
+    print "Test suite 1 - validpoly              "
 
 #Test 1: x+1 a valid polynomial
 testnum += 1
@@ -93,6 +93,30 @@ testoutput(testnum, result)
 testnum += 1
 poly = [1,'a',3,4]
 result = not validpoly(poly)
+testoutput(testnum, result)
+
+#=====================================================
+#Test suite 1 - evalpoly
+if verbose:
+    print "---------------------------------------"
+    print "Test suite 2 - evalpoly              "
+
+#Test 8: x+1 evaluated at 3
+testnum += 1
+poly = [1,1]
+val = 3
+result = (evalpoly(poly, val) == 4)
+testoutput(testnum,result)
+
+#Test : invalid polynomial
+testnum += 1
+poly = [1,2,'a',1]
+val = 3
+try:
+    evalpoly(poly,val)
+    result = False
+except:
+    result = True
 testoutput(testnum, result)
 
 #=====================================================

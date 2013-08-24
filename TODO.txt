@@ -6,3 +6,45 @@ TO-DO LIST:
     *   Translate sparse to dense
     *   Translate dense to sparse
     *   Symbolic solution of polynomials of degree < 5
+
+
+
+Git stuff:
+Open in powershell
+	See current status
+		git status
+	Log local changes
+		git commit -m "Message you want to put"
+	Push stuff up to Github
+		git push -u origin master
+	Add a file
+		git add FILENAME
+		<Then commit and push>
+	Remove a file
+		git rm FILENAME
+		<Then commit and push>
+	Pull any new changes from github
+		git pull origin master
+	Get git history
+		git log
+	Get differences with latest version
+		git diff HEAD
+	See changes you have committed but not pushed
+		git diff --staged
+	'Unstage' files you have committed
+		git reset FILENAME
+	Revert a file to the last commit
+		git checkout -- FILENAME
+	Create a new branch (to be alongside master)
+		git branch BRANCHNAME
+	Switch to a different branch
+		git checkout BRANCHNAME
+	Merge a branch into master
+		git checkout master     // switching to master branch
+		git merge BRANCHNAME
+	Get rid of a branch
+		git branch -d BRANCHNAME
+
+	Shortcut version of pushing? 
+		git push
+	

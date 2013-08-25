@@ -20,6 +20,8 @@ from math import sqrt
 # where P[i] is the coefficient of x^i.
 
 # validpoly
+# Checks if a polynomial is valid for our module. Will be used as a
+# first step error check in most functions.
 # Input: testpoly - a polynomial to be tested for validity
 # Output: True if a valid polynomial, False if not
 # Example: validpoly([1,2,2]) => True
@@ -33,12 +35,13 @@ def validpoly(testpoly):
             return False
     return True
 
-# evalpoly
+# evalpoly_basic
+# Evaluates a polynomial at a value.
 # Input: poly - a polynomial to be evaluated
 #        val  - the value to be evaluated at
 # Output: True if a valid polynomial, False if not
-# Example: evalpoly([1,2,1], 3) => 16
-def evalpoly(poly,val):
+# Example: evalpoly_basic([1,2,1], 3) => 16
+def evalpoly_basic(poly,val):
     if not validpoly(poly):
         raise Exception('Not a valid polynomial')
     evaltot = 0
@@ -46,3 +49,22 @@ def evalpoly(poly,val):
         evaltot += poly[i] * (val**i)
     return evaltot
 
+# evalpoly_horner
+def evalpoly_horner(poly,val):
+    if not validpoly(poly):
+        raise Exception('Not a valid polynomial')
+    polylen = len(poly)
+    evaltot = poly[polylen-1]
+    for i in xrange(1,polylen):
+        evaltot = poly[polylen-(i+1)] + (evaltot * val)
+    return evaltot
+
+#evalpoly
+#
+def evalpoly(poly,val):
+    return evalpoly_basic(poly,val)
+
+def polydegree(poly):
+    if not validpoly(poly):
+        raise Exception('Not a valid polynomial')
+    return (len(poly)-1)

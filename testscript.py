@@ -24,6 +24,9 @@ else:
     sys.stdout.write('Testing: ')
     verbose = 0
 
+#Force verbosity
+#verbose = 1
+
 testnum = 0
 passedtests = 0
 totaltests = 0
@@ -41,7 +44,7 @@ def testoutput(testnum,result):
             #sleep(1.5)
             sys.stdout.write('\bP')
         else:
-            sys.stdout.write('\bF')
+            sys.stdout.write('\bF('+str(testnum)+')')
     if result:
         passedtests += 1
     totaltests += 1
@@ -54,66 +57,115 @@ if verbose:
     print "---------------------------------------"
     print "Test suite 1 - validpoly              "
 
-#Test 1: x+1 a valid polynomial
+#Test: x+1 a valid polynomial
 testnum += 1
 poly = [1,1]
 result = validpoly(poly)
 testoutput(testnum,result)
 
-#Test 2: x^2-1 a valid polynomial
+#Test: x^2-1 a valid polynomial
 testnum += 1
 poly = [1,0,-1]
 result = validpoly(poly)
 testoutput(testnum, result)
 
-#Test 3: Empty polynomial not a valid polynomial
+#Test: Empty polynomial not a valid polynomial
 testnum += 1
 poly = []
 result = not validpoly(poly)
 testoutput(testnum, result)
 
-#Test 4: 0 polynomial a valid polynomial
+#Test: 0 polynomial a valid polynomial
 testnum += 1
 poly = [0]
 result = validpoly(poly)
 testoutput(testnum, result)
 
-#Test 5: non-list input
+#Test: non-list input
 testnum += 1
 poly = 1
 result = not validpoly(poly)
 testoutput(testnum, result)
 
-#Test 6&7: non-integer coefficients
+#Test: non-integer coefficients
 testnum += 1
 poly = [1,2,3,4.543]
 result = not validpoly(poly)
 testoutput(testnum, result)
 
+#Test: non-integer coefficients
 testnum += 1
 poly = [1,'a',3,4]
 result = not validpoly(poly)
 testoutput(testnum, result)
 
 #=====================================================
-#Test suite 1 - evalpoly
+#Test suite 2 - evalpoly functions
 if verbose:
     print "---------------------------------------"
-    print "Test suite 2 - evalpoly              "
+    print "Test suite 2 - evalpoly functions      "
 
-#Test 8: x+1 evaluated at 3
+#evalpoly_basic
+#Test: x+1 evaluated at 3
 testnum += 1
 poly = [1,1]
 val = 3
-result = (evalpoly(poly, val) == 4)
+result = (evalpoly_basic(poly, val) == 4)
 testoutput(testnum,result)
 
-#Test : invalid polynomial
+#Test: x^2+2x+1 at 3
+testnum += 1
+poly = [1,2,1]
+val = 3
+result = (evalpoly_basic(poly, val) == 16)
+testoutput(testnum,result)
+
+#Test: zero polynomial and 1
+testnum += 1
+poly = [0]
+val = 3
+result = (evalpoly_basic(poly, val) == 0)
+testoutput(testnum,result)
+
+#Test: invalid polynomial
 testnum += 1
 poly = [1,2,'a',1]
 val = 3
 try:
-    evalpoly(poly,val)
+    evalpoly_basic(poly,val)
+    result = False
+except:
+    result = True
+testoutput(testnum, result)
+
+#evalpoly_horner
+#Test: x+1 evaluated at 3
+testnum += 1
+poly = [1,1]
+val = 3
+result = (evalpoly_horner(poly, val) == 4)
+testoutput(testnum,result)
+
+#Test: x^2+2x+1 at 3
+testnum += 1
+poly = [1,2,1]
+val = 3
+result = (evalpoly_horner(poly, val) == 16)
+testoutput(testnum,result)
+
+#Test: zero polynomial and 1
+testnum += 1
+poly = [0]
+val = 3
+result = (evalpoly_horner(poly, val) == 0)
+testoutput(testnum,result)
+
+#Test: invalid polynomial
+testnum += 1
+poly = [1,2,'a',1]
+val = 3
+try:
+    evalpoly_horner(poly,val)
     result = False
 except:
     result = True

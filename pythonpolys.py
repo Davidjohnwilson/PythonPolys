@@ -1,3 +1,5 @@
+# coding: utf-8
+
 #   Python Polynomial Module
 #     by David John Wilson
 
@@ -62,9 +64,39 @@ def evalpoly_horner(poly,val):
 #evalpoly
 #
 def evalpoly(poly,val):
-    return evalpoly_basic(poly,val)
+    return evalpoly_horner(poly,val)
 
 def polydegree(poly):
     if not validpoly(poly):
         raise Exception('Not a valid polynomial')
     return (len(poly)-1)
+
+
+#dispsqrt
+def dispsqrt(argument):
+    return "√"+'['+str(argument)+']'
+
+def disproot(power,argument):
+    return "("+str(power)+")"+"√"+'['+str(argument)+']'
+
+
+
+def solve_quad_symbolic(poly):
+    if len(poly) != 3:
+        raise Exception('Not a quadratic polynomial')
+    discrim = poly[1]**2 - 4 * poly[0] * poly[2]
+    if discrim == 0:
+        if poly[1] % (2*poly[0]) == 0:
+            term1 = poly[1]/(2*poly[0])
+            return str(term1)
+        else:
+            return str(poly[1]) +'/'+ str(2*poly[0])
+    if (poly[2] % (2*poly[0]) == 0) and (discrim % (4*poly[0]*poly[0]) == 0):
+        term1 = poly[2] / (2*poly[0])
+        term2 = discrim / (4*poly[0]*poly[0])
+        return term1 + '±' + dispsqrt(term2)
+    return '[' + str(-poly[1]) + '±' + dispsqrt(discrim) +']' + '/' + str(2*poly[0])
+
+print solve_quad_symbolic([5,7,1])
+
+

@@ -127,6 +127,13 @@ val = 3
 result = (evalpoly_basic(poly, val) == 0)
 testoutput(testnum,result)
 
+#Test: Bigger polynomial
+testnum += 1
+poly = [-1,0,0,0,0,0,0,0,-6,1,1]
+val = 3
+result = (evalpoly_basic(poly, val) == 39365)
+testoutput(testnum,result)
+
 #Test: invalid polynomial
 testnum += 1
 poly = [1,2,'a',1]
@@ -158,6 +165,13 @@ testnum += 1
 poly = [0]
 val = 3
 result = (evalpoly_horner(poly, val) == 0)
+testoutput(testnum,result)
+
+#Test: Bigger polynomial
+testnum += 1
+poly = [-1,0,0,0,0,0,0,0,-6,1,1]
+val = 3
+result = (evalpoly_horner(poly, val) == 39365)
 testoutput(testnum,result)
 
 #Test: invalid polynomial

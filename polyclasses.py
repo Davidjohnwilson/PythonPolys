@@ -25,6 +25,18 @@ print(f.printpoly())
 
 #Sparse Poly
 class SparsePoly:
+    'Polynomials stored in a sparse manner'
+    coeffpairs=[]
+
     def __init__(self,coeffpairs):
         self.coeffpairs = coeffpairs
+    
+    def degree(self):
+        deg = 0
+        for i in xrange(len(self.coeffpairs)):
+            if self.coeffpairs[i][0] > deg:
+                deg = self.coeffpairs[i][0]
+        return deg
 
+g = SparsePoly([[0,3],[1,5],[6,7]])
+print(g.degree())

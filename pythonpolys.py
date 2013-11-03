@@ -1,3 +1,4 @@
+
 # coding: utf-8
 from __future__ import division
 
@@ -98,7 +99,7 @@ def solve_quad_symbolic(poly):
         term1 = poly[2] / (2*poly[2])
         term2 = discrim / (4*poly[2]*poly[2])
         return term1 + '±' + dispsqrt(term2)
-    return '[' + str(-poly[1]) + '±' + dispsqrt(discrim) +']' + '/' + str(2*poly[2])
+    return '[' + str(-poly[1]) + '±' + dispsqrt(int(discrim)) +']' + '/' + str(2*poly[2])
 
 print solve_quad_symbolic([5,7,1])
 

@@ -1,4 +1,5 @@
 #Polynomial classes
+from math import *
 
 #dense polynomial
 class DensePoly:
@@ -17,10 +18,17 @@ class DensePoly:
             polystr += 'x^'+str(n-i) + '+'
         polystr += str(self.coeffs[0])
         return polystr
+    def evalpoly(self,x):
+        val = 0
+        for i in xrange(len(self.coeffs)):
+            val += self.coeffs[i]*pow(x,i)
+        return val
+
 print("f = DensePoly([3,2,5]):")
 f = DensePoly([3,2,5])
 print(f.degree())
 print(f.printpoly())
+print(f.evalpoly(2))
 
 #Sparse Poly
 class SparsePoly:
@@ -46,8 +54,14 @@ class SparsePoly:
             else:
                 polystr += str(self.coeffpairs[i][1]) + 'x^' + str(self.coeffpairs[i][0]) + '+'
         return polystr[:-1]
+    def evalpoly(self,x):
+        val = 0
+        for i in xrange(len(self.coeffpairs)):
+            val += self.coeffpairs[i][1]*pow(x,self.coeffpairs[i][0])
+        return val
         
 print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 g = SparsePoly([[0,3],[1,5],[6,7]])
 print(g.degree())
 print(g.printpoly())
+print(g.evalpoly(2))

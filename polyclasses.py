@@ -2,7 +2,7 @@
 from __future__ import division
 
 #Polynomial classes
-from math import *
+from math import pow
 
 #dense polynomial
 #We store an array with all the coefficients for every degree
@@ -43,14 +43,15 @@ class DensePoly:
             polyarr.append(str(self.coeffs[0]))
         return '+'.join(polyarr)
 
-
-
     def evalpoly(self,x):
-        #naive evaluation
-        val = 0
-        for i in xrange(len(self.coeffs)):
-            val += self.coeffs[i]*pow(x,i)
-        return val
+        #Let's use horner!
+        n = len(self.coeffs)
+        val = self.coeffs[n-1]
+        for i in xrange(1,n):
+            val = self.coeffs[n-(i+1)] + (val*x)
+        return val        
+
+
 
 # print("f = DensePoly([3,2,5]):")
 # f = DensePoly([3,2,5])

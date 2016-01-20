@@ -5,8 +5,8 @@ if __name__ == "__main__":
     print "---------------------------------------"
     print "TestScript for Python Polynomial Module"
     print "Code by David John Wilson"
-    print "Email: D.J.Wilson@bath.ac.uk"
-    print "Last Updated: 24/08/2013"
+    print "Email: david.john.wilson@me.com"
+    print "Last Updated: 19/01/2016"
     print "---------------------------------------"
 
 # Import the polynomial module and all functions

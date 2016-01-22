@@ -66,32 +66,37 @@ class SparsePoly:
 
     def __init__(self,coeffpairs):
         self.coeffpairs = coeffpairs
+        #Sort when we save?
     
     def degree(self):
         #to check degree we look for largest degree
-        deg = 0
-        #don't assume all in order!
-        for i in xrange(len(self.coeffpairs)):
-            if self.coeffpairs[i][0] > deg:
-                deg = self.coeffpairs[i][0]
-        return deg
+        return max([c[0] for c in self.coeffpairs])
 
-    def printpoly(self):
+    def printpoly(self,variable='x'):
         #print polynomial
-        polystr = ''
-        n=len(self.coeffpairs)
-        for i in xrange(1,n+1):
-            if self.coeffpairs[n-i][0]==0:
-                polystr += str(self.coeffpairs[n-i][1]) + '+'
+        polyarr= []
+        for c in self.coeffpairs:
+            if c[0]==0:
+                polyarr.append(str(c[1]))
             else:
-                polystr += str(self.coeffpairs[n-i][1]) + 'x^' + str(self.coeffpairs[n-i][0]) + '+'
-        return polystr[:-1]
+                polyarr.append(str(c[1])+variable+'^'+str(c[0]))
+        return '+'.join(polyarr)
 
     def evalpoly(self,x):
         #naive evaluation
+        #We store partial power values to try and save on computation
+        #Much quicker when powers in ascending order
         val = 0
-        for i in xrange(len(self.coeffpairs)):
-            val += self.coeffpairs[i][1]*pow(x,self.coeffpairs[i][0])
+        current_pow = 0
+        current_pow_val = 1 
+        for c in self.coeffpairs:
+            if c[0]>=current_pow:
+                current_pow_val = current_pow_val * pow(x,c[0]-current_pow)
+                current_pow = c[0]
+            else:
+                current_pow_val = pow(x,c[0])
+                current_pow = c[0]
+            val += c[1]*current_pow_val
         return val
         
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")

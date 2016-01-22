@@ -49,7 +49,15 @@ class DensePoly:
         val = self.coeffs[n-1]
         for i in xrange(1,n):
             val = self.coeffs[n-(i+1)] + (val*x)
-        return val        
+        return val   
+
+    def to_sparse_poly(self):
+        polyarr = []
+        n=len(self.coeffs)
+        for i in xrange(n):
+            if self.coeffs[i]!=0:
+                polyarr.append([i,self.coeffs[i]])
+        return SparsePoly(polyarr)
 
 
 
@@ -98,6 +106,13 @@ class SparsePoly:
                 current_pow = c[0]
             val += c[1]*current_pow_val
         return val
+
+    def to_dense_poly(self):
+        deg = self.degree()
+        polyarr = [0 for i in xrange(deg+1)]
+        for c in self.coeffpairs:
+            polyarr[c[0]] = c[1]
+        return DensePoly(polyarr)
         
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 # g = SparsePoly([[0,3],[1,5],[6,7]])

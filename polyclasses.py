@@ -11,15 +11,15 @@ class DensePoly:
     coeffs = []
     
     def __init__(self,coeffs):
-
         tmp_coeffs = coeffs
+        #Remove any trailing 0's
         while tmp_coeffs and (tmp_coeffs[-1]==0):
             tmp_coeffs.pop()
         self.coeffs = tmp_coeffs
 
     def degree(self):
         #degree is just the length of the vector of coefficients minus 1 
-        #(as we store the 0 coefficient
+        #(as we don't store trailing 0 coefficients)
         if len(self.coeffs)==0:
             return 0
         else:

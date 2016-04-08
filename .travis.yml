@@ -38,7 +38,7 @@ install:
 - python setup.py install --record installed_files.txt
 
 script:
-- nosetests -v --with-coverage --cover-package=shablona
+- nosetests -v --with-coverage --cover-package=pypoly
 - flake8 --ignore N802,N806 `find . -name \*.py | grep -v setup.py | grep -v /doc/`
 
 after_success:

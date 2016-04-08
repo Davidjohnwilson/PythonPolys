@@ -61,4 +61,4 @@ VERSION = __version__
 PACKAGES = ['pypoly',
             'pypoly.tests']
 PACKAGE_DATA = {'pypoly': [pjoin('data', '*')]}
-REQUIRES = [""]
+REQUIRES = []

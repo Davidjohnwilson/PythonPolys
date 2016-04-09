@@ -1,11 +1,11 @@
 # coding: utf-8
 from __future__ import division
 
-#Polynomial classes
+# Polynomial classes
 from math import pow
 
-#dense polynomial
-#We store an array with all the coefficients for every degree
+# Dense polynomial
+# We store an array with all the coefficients for every degree
 class DensePoly:
     'Polynomials stored in a dense manner'
     coeffs = []
@@ -18,8 +18,8 @@ class DensePoly:
         self.coeffs = tmp_coeffs
 
     def degree(self):
-        #degree is just the length of the vector of coefficients minus 1 
-        #(as we don't store trailing 0 coefficients)
+        # degree is just the length of the vector of coefficients minus 1 
+        # (as we don't store trailing 0 coefficients)
         if len(self.coeffs)==0:
             return 0
         else:

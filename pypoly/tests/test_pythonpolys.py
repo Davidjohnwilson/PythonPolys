@@ -1,3 +1,6 @@
+import sys 
+import os
+sys.path.append(os.path.abspath("./pypoly"))
 from pythonpolys import *
 
 # =============================
@@ -74,7 +77,7 @@ def test_evalpoly_basic_5():
 	try:
 		evalpoly_basic(poly, val) == 4
 	except Exception as e:
-		assert e.message == 'Not a valid polynomial'
+		assert e.args[0] == 'Not a valid polynomial'
 
 # =============================
 # Test suite 3: evalpoly_horner
@@ -111,7 +114,7 @@ def test_evalpoly_horner_5():
 	try:
 		evalpoly_horner(poly, val) == 4
 	except Exception as e:
-		assert e.message == 'Not a valid polynomial'
+		assert e.args[0] == 'Not a valid polynomial'
 
 
 

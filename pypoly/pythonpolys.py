@@ -1,6 +1,5 @@
 # coding: utf-8
 from __future__ import division
-from dipy.utils.six.moves import xrange
 
 # We need to import some important mathematical functions
 from math import pow
@@ -11,12 +10,12 @@ from math import sqrt
 
 # Implementation of polynomials in python
 if __name__ == "__main__":
-    print "---------------------------------------"
-    print "Python Polynomial Module"
-    print "Code by David John Wilson"
-    print "Email: D.J.Wilson@bath.ac.uk"
-    print "Last Updated: 24/08/2013"
-    print "---------------------------------------"
+    print("---------------------------------------")
+    print("Python Polynomial Module               ")
+    print("Code by David John Wilson              ")
+    print("Email: D.J.Wilson@bath.ac.uk           ")
+    print("Last Updated: 24/08/2013               ")
+    print("---------------------------------------")
 
 # (Initially at least) we will consider a polynomial to be a list, P,
 # where P[i] is the coefficient of x^i.
@@ -49,7 +48,7 @@ def evalpoly_basic(poly, val):
     if not validpoly(poly):
         raise Exception('Not a valid polynomial')
     evaltot = 0
-    for i in xrange(len(poly)):
+    for i in range(len(poly)):
         evaltot += poly[i] * (val ** i)
     return evaltot
 
@@ -60,7 +59,7 @@ def evalpoly_horner(poly, val):
         raise Exception('Not a valid polynomial')
     polylen = len(poly)
     evaltot = poly[polylen - 1]
-    for i in xrange(1, polylen):
+    for i in range(1, polylen):
         evaltot = poly[polylen - (i + 1)] + (evaltot * val)
     return evaltot
 
@@ -108,7 +107,7 @@ def solve_quad_symbolic(poly):
     return '[' + str(-poly[1]) + '±' + dispsqrt(int(discrim)) + ']' + \
            '/' + str(2 * poly[2])
 
-print solve_quad_symbolic([5, 7, 1])
+print(solve_quad_symbolic([5, 7, 1]))
 
 
 def solve_quad_numeric(poly):
@@ -126,7 +125,7 @@ def solve_quad_numeric(poly):
         return "No Solutions"
 
 
-print solve_quad_numeric([5, 7, 1])
+print(solve_quad_numeric([5, 7, 1]))
 
 
 def solve_cubic_numeric(poly):
@@ -142,15 +141,15 @@ def solve_cubic_numeric(poly):
         pow(q - sqrt(pow(q, 2) + pow((r - pow(p, 2)), 1)), 1 / 3.0) + p
     return x
 
-print solve_cubic_numeric([-1, 0, 0, 1])
+print(solve_cubic_numeric([-1, 0, 0, 1]))
 
 
 def differentiate_poly(poly):
     # differentiate_poly
     diffpoly = []
-    for i in xrange(1, len(poly)):
+    for i in range(1, len(poly)):
         diffpoly.append(i * poly[i])
     return diffpoly
 
-print differentiate_poly([25, 5, 7, 1, 6])
-print differentiate_poly(differentiate_poly([25, 5, 7, 1, 6]))
+print(differentiate_poly([25, 5, 7, 1, 6]))
+print(differentiate_poly(differentiate_poly([25, 5, 7, 1, 6])))

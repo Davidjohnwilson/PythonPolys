@@ -1,6 +1,5 @@
 # coding: utf-8
 from __future__ import division
-from dipy.utils.six.moves import xrange
 
 # Polynomial classes
 from math import pow
@@ -35,7 +34,7 @@ class DensePoly:
         n = len(self.coeffs)
         if n == 0:
             return ''
-        for i in xrange(1, n - 1):
+        for i in range(1, n - 1):
             # we work backwards
             if self.coeffs[n - i] != 0:
                 polyarr.append(str(self.coeffs[n - i]) +
@@ -50,14 +49,14 @@ class DensePoly:
         # Let's use Horner!
         n = len(self.coeffs)
         val = self.coeffs[n - 1]
-        for i in xrange(1, n):
+        for i in range(1, n):
             val = self.coeffs[n - (i + 1)] + (val * x)
         return val
 
     def to_sparse_poly(self):
         polyarr = []
         n = len(self.coeffs)
-        for i in xrange(n):
+        for i in range(n):
             if self.coeffs[i] != 0:
                 polyarr.append([i, self.coeffs[i]])
         return SparsePoly(polyarr)
@@ -112,7 +111,7 @@ class SparsePoly:
 
     def to_dense_poly(self):
         deg = self.degree()
-        polyarr = [0 for i in xrange(deg + 1)]
+        polyarr = [0 for i in range(deg + 1)]
         for c in self.coeffpairs:
             polyarr[c[0]] = c[1]
         return DensePoly(polyarr)

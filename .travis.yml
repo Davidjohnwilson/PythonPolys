@@ -38,7 +38,7 @@ install:
 - python setup.py install --record installed_files.txt
 
 script:
-- nosetests -v --with-coverage --cover-package=pypoly --with-test-id
+- nosetests -v --with-coverage --cover-package=pypoly
 - flake8 --ignore N802,N806 ./pypoly/*.py
 #- flake8 --ignore N802,N806 `find . -name \*.py | grep -v setup.py | grep -v /doc/`
 

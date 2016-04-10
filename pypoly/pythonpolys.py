@@ -107,7 +107,7 @@ def solve_quad_symbolic(poly):
     return '[' + str(-poly[1]) + '±' + dispsqrt(int(discrim)) + ']' + \
            '/' + str(2 * poly[2])
 
-print(solve_quad_symbolic([5, 7, 1]))
+# print(solve_quad_symbolic([5, 7, 1]))
 
 
 def solve_quad_numeric(poly):
@@ -125,7 +125,7 @@ def solve_quad_numeric(poly):
         return "No Solutions"
 
 
-print(solve_quad_numeric([5, 7, 1]))
+# print(solve_quad_numeric([5, 7, 1]))
 
 
 def solve_cubic_numeric(poly):
@@ -141,7 +141,7 @@ def solve_cubic_numeric(poly):
         pow(q - sqrt(pow(q, 2) + pow((r - pow(p, 2)), 1)), 1 / 3.0) + p
     return x
 
-print(solve_cubic_numeric([-1, 0, 0, 1]))
+# print(solve_cubic_numeric([-1, 0, 0, 1]))
 
 
 def differentiate_poly(poly):
@@ -151,5 +151,5 @@ def differentiate_poly(poly):
         diffpoly.append(i * poly[i])
     return diffpoly
 
-print(differentiate_poly([25, 5, 7, 1, 6]))
-print(differentiate_poly(differentiate_poly([25, 5, 7, 1, 6])))
+# print(differentiate_poly([25, 5, 7, 1, 6]))
+# print(differentiate_poly(differentiate_poly([25, 5, 7, 1, 6])))

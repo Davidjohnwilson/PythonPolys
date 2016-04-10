@@ -4,9 +4,13 @@
 
 TO-DO LIST:
  
-* Evaluation of polynomial - Horner's Rule
+* Flesh out package contents
+* Tests for Polyclasses 
 * Translate sparse to dense
 * Translate dense to sparse
 * Symbolic solution of polynomials of degree < 5
-
+* Negating polynomials
+* Addition/Subtraction of polynomials
+* Multiplying polynomials
+* Dividing polynomials
 

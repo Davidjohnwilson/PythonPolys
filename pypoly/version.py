@@ -33,7 +33,7 @@ pypoly
 PyPoly is a simple symbolic polynomial library for Python.
 To get started, please go to the
 repository README_.
-.. _README: https://github.com/davidjohnwilson/PythonPolys/blob/master/README.md
+.. _README: https://github.com/davidjohnwilson/PythonPolys/README.md
 License
 =======
 ``pypoly`` is licensed under the terms of the MIT license. See the file

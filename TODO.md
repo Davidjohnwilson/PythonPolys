@@ -13,4 +13,6 @@ TO-DO LIST:
 * Addition/Subtraction of polynomials
 * Multiplying polynomials
 * Dividing polynomials
-
+* smarter quadratic solver - simplify if sqrt is exact
+* negatives in disppoly
+* imaginary numbers in solve cubic

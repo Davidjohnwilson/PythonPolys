@@ -38,6 +38,38 @@ def validpoly(testpoly):
     return True
 
 
+def disppoly(poly, variable='x'):
+    # disppoly
+    # Checks if a polynomial is valid for our module and if so
+    # returns a human-readable string representation.
+    # Input: poly - a polynomial to be printed
+    #        variable - optional dummy variable (default: x)
+    # Output: string representing the polynomial
+    # Example: disppoly([1,2,2],'y') => '2y^2+2y+1'
+    # TODO: negatives
+    if not validpoly(poly):
+        raise Exception('Not a valid polynomial')
+    polyarr = []
+    dummy_variable = variable
+    n = len(poly)
+    if n == 0:
+        return ''
+    for i in range(1, n - 1):
+        # we work backwards
+        if poly[n - i] != 0 and poly[n - i] != 1 and poly[n - i] != -1:
+            polyarr.append(str(poly[n - i]) +
+                           dummy_variable + '^' + str(n - i))
+        elif poly[n - i] == 1:
+            polyarr.append(dummy_variable + '^' + str(n - i))
+        elif poly[n - i] == -1:
+            polyarr.append('-' + dummy_variable + '^' + str(n - i))
+    if n > 0 and poly[1] != 0:
+        polyarr.append(str(poly[1]) + dummy_variable)
+    if poly[0] != 0:
+        polyarr.append(str(poly[0]))
+    return '+'.join(polyarr)
+
+
 def evalpoly_basic(poly, val):
     # evalpoly_basic
     # Evaluates a polynomial at a value.
@@ -64,9 +96,12 @@ def evalpoly_horner(poly, val):
     return evaltot
 
 
-def evalpoly(poly, val):
-    # evalpoly
-    return evalpoly_horner(poly, val)
+def evalpoly(poly, val, method='horner'):
+    # evalpoly - defaults to horner
+    if method == 'basic':
+        return evalpoly_basic(poly, val)
+    else:
+        return evalpoly_horner(poly, val)
 
 
 def polydegree(poly):
@@ -78,11 +113,17 @@ def polydegree(poly):
 
 def dispsqrt(argument):
     # dispsqrt
+    if not isinstance(argument, (int, float, str)):
+        raise Exception('Argument not a string or number')
     return "√" + '[' + str(argument) + ']'
 
 
 def disproot(power, argument):
     # disproot
+    if not isinstance(power, (int, float, str)):
+        raise Exception('Power not a string or number')
+    if not isinstance(argument, (int, float, str)):
+        raise Exception('Argument not a string or number')
     return "(" + str(power) + ")" + "√" + '[' + str(argument) + ']'
 
 
@@ -93,7 +134,7 @@ def solve_quad_symbolic(poly):
     discrim = pow(poly[1], 2) - 4 * poly[0] * poly[2]
     if discrim == 0:
         if poly[1] % (2 * poly[2]) == 0:
-            term1 = poly[1] / (2 * poly[2])
+            term1 = int(poly[1] / (2 * poly[2]))
             return str(term1)
         else:
             return str(poly[1]) + '/' + str(2 * poly[2])

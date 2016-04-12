@@ -50,7 +50,7 @@ def disppoly(poly, variable='x'):
     if not validpoly(poly):
         raise Exception('Not a valid polynomial')
     polyarr = []
-    dummy_variable = variable
+    dummy_variable = str(variable)
     n = len(poly)
     if n == 0:
         return ''
@@ -64,10 +64,15 @@ def disppoly(poly, variable='x'):
         elif poly[n - i] == -1:
             polyarr.append('-' + dummy_variable + '^' + str(n - i))
     if n > 0 and poly[1] != 0:
-        polyarr.append(str(poly[1]) + dummy_variable)
+        if poly[1] == 1:
+            polyarr.append(dummy_variable)
+        elif poly[1] == -1:
+            polyarr.append('-' + dummy_variable)
+        else:
+            polyarr.append(str(poly[1]) + dummy_variable)
     if poly[0] != 0:
         polyarr.append(str(poly[0]))
-    return '+'.join(polyarr)
+    return '+'.join(polyarr).replace('+-', '-')
 
 
 def evalpoly_basic(poly, val):
@@ -188,7 +193,10 @@ def solve_cubic_numeric(poly):
 def differentiate_poly(poly):
     # differentiate_poly
     diffpoly = []
-    for i in range(1, len(poly)):
+    n = len(poly)
+    if n == 1:
+        diffpoly = [0]
+    for i in range(1, n):
         diffpoly.append(i * poly[i])
     return diffpoly
 

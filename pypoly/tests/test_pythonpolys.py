@@ -18,7 +18,7 @@ def test_validpoly_1():
 
 def test_validpoly_2():
     # Test: x^2-1 a valid polynomial
-    poly = [1, 0, -1]
+    poly = [-1, 0, 1]
     assert validpoly(poly)
 
 
@@ -55,6 +55,39 @@ def test_validpoly_7():
 # Test suite 2: disppoly (TODO)
 # ==================================
 
+
+def test_disppoly_1():
+    # Test: x+1 
+    poly = [1, 1]
+    assert disppoly(poly) == 'x+1'
+
+
+def test_disppoly_2():
+    # Test: x^2-1 
+    poly = [-1, 0, 1]
+    assert disppoly(poly) == 'x^2-1'
+
+
+def test_disppoly_3():
+    # Test: x^2-1  with dummy variable y
+    poly = [-1, 0, 1]
+    assert disppoly(poly,'y') == 'y^2-1'
+
+
+def test_disppoly_4():
+    # Test: Bigger polynomial
+    poly = [-1, 0, 0, 0, 0, 0, 0, 0, -6, 1, 1]
+    assert disppoly(poly) == 'x^10+x^9-6x^8-1'
+
+
+def test_disppoly_5():
+    # Test: invalid polynomial
+    poly = [1, 2, 'a', 1]
+    try:
+        disppoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
 
 # ==================================
 # Test suite 3: evalpoly_basic
@@ -398,3 +431,25 @@ def test_solve_cubic_numeric_1():
 # def test_solve_cubic_numeric_2():
 # 	poly = [-6,11,-6,1]
 # 	assert solve_cubic_numeric(poly) == [1.0]
+
+
+# ==================================
+# Test suite 12: differentiate_poly
+# ==================================
+
+def test_differentiate_poly_1():
+    # Test: x+1
+    poly = [1, 1]
+    assert differentiate_poly(poly) == [1]
+
+
+def test_differentiate_poly_2():
+    # Test: 1
+    poly = [1]
+    assert differentiate_poly(poly) == [0]
+
+
+def test_differentiate_poly_3():
+    # Test: 5x^4+4x^3+3x^2+2x+1
+    poly = [1, 2, 3, 4, 5]
+    assert differentiate_poly(poly) == [2, 6, 12, 20]

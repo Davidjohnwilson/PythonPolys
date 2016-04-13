@@ -11,27 +11,34 @@ from polyclasses import *
 
 
 def test_DensePoly_1():
+    # Test: x+1 as a Polynomial
+    poly = [1, 1]
+    f = DensePoly(poly)
+    assert isinstance(f, Polynomial)
+
+
+def test_DensePoly_2():
     # Test: x+1 as a densepoly
     poly = [1, 1]
     f = DensePoly(poly)
     assert isinstance(f, DensePoly)
 
 
-def test_DensePoly_2():
+def test_DensePoly_3():
     # Test: x+1 with zeros as a densepoly
     poly = [1, 1, 0, 0, 0, 0, 0]
     f = DensePoly(poly)
     assert isinstance(f, DensePoly)
 
 
-def test_DensePoly_3():
+def test_DensePoly_4():
     # Test: zero polynomial
     poly = [0]
     f = DensePoly(poly)
     assert isinstance(f, DensePoly)
 
 
-def test_DensePoly_4():
+def test_DensePoly_5():
     # Test: invalid polynomial
     poly = 1
     try:
@@ -41,7 +48,7 @@ def test_DensePoly_4():
         assert e.args[0] == 'Not a valid polynomial'
 
 
-def test_DensePoly_5():
+def test_DensePoly_6():
     # Test: invalid polynomial
     poly = 'a'
     try:
@@ -51,7 +58,7 @@ def test_DensePoly_5():
         assert e.args[0] == 'Not a valid polynomial'
 
 
-def test_DensePoly_6():
+def test_DensePoly_7():
     # Test: invalid polynomial
     poly = [1, 2, 'a', 1]
     try:
@@ -61,63 +68,63 @@ def test_DensePoly_6():
         assert e.args[0] == 'Not a valid polynomial'
 
 
-def test_DensePoly_7():
+def test_DensePoly_8():
     # Test: x+1 degree
     poly = [1, 1]
     f = DensePoly(poly)
     assert f.degree() == 1
 
 
-def test_DensePoly_8():
+def test_DensePoly_9():
     # Test: x+1 degree with zeros
     poly = [1, 1, 0, 0, 0, 0, 0]
     f = DensePoly(poly)
     assert f.degree() == 1
 
 
-def test_DensePoly_9():
+def test_DensePoly_10():
     # Test: x^10+1 degree with zeros
     poly = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
     f = DensePoly(poly)
     assert f.degree() == 10
 
 
-def test_DensePoly_10():
+def test_DensePoly_11():
     # Test: constant polynomial
     poly = [1]
     f = DensePoly(poly)
     assert f.degree() == 0
 
 
-def test_DensePoly_11():
+def test_DensePoly_12():
     # Test: zero polynomial (undefined degree so -1)
     poly = [0]
     f = DensePoly(poly)
     assert f.degree() == -1
 
 
-def test_DensePoly_12():
+def test_DensePoly_13():
     # Test: print poly x+1
     poly = [1,1]
     f = DensePoly(poly)
     assert f.printpoly() == 'x+1'
 
 
-def test_DensePoly_13():
+def test_DensePoly_14():
     # Test: print poly -x-1
     poly = [-1,-1]
     f = DensePoly(poly)
     assert f.printpoly() == '-x-1'
 
 
-def test_DensePoly_14():
+def test_DensePoly_15():
     # Test: print poly 1
     poly = [1]
     f = DensePoly(poly)
     assert f.printpoly() == '1'
 
 
-def test_DensePoly_15():
+def test_DensePoly_16():
     # Test: print poly 0
     poly = [0]
     f = DensePoly(poly)
@@ -137,11 +144,17 @@ def test_DensePoly_15():
 
 
 def test_SparsePoly_1():
+    # Test: x+1 as a Polynomial
+    poly = [1, 1]
+    f = SparsePoly(poly)
+    assert isinstance(f, Polynomial)
+
+
+def test_SparsePoly_2():
     # Test: x+1 as a SparsePoly
     poly = [1, 1]
     f = SparsePoly(poly)
     assert isinstance(f, SparsePoly)
-
 
 
 

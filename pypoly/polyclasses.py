@@ -4,11 +4,22 @@ from __future__ import division
 # Polynomial classes
 from math import pow
 
+
+# General Polynomial Class
+
+
+class Polynomial:
+    'Polynomials of any type'
+
+    def __init__(self):
+        pass
+
+
 # dense polynomial
 # We store an array with all the coefficients for every degree
 
 
-class DensePoly:
+class DensePoly(Polynomial):
     'Polynomials stored in a dense manner'
     coeffs = []
 
@@ -91,7 +102,7 @@ class DensePoly:
 # Sparse Poly
 
 
-class SparsePoly:
+class SparsePoly(Polynomial):
     'Polynomials stored in a sparse manner'
     coeffpairs = []
 

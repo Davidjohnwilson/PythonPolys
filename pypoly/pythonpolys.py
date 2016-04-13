@@ -56,14 +56,14 @@ def disppoly(poly, variable='x'):
         return ''
     for i in range(1, n - 1):
         # we work backwards
-        if poly[n - i] != 0 and poly[n - i] != 1 and poly[n - i] != -1:
+        if poly[n - i] not in [0, 1, -1]:
             polyarr.append(str(poly[n - i]) +
                            dummy_variable + '^' + str(n - i))
         elif poly[n - i] == 1:
             polyarr.append(dummy_variable + '^' + str(n - i))
         elif poly[n - i] == -1:
             polyarr.append('-' + dummy_variable + '^' + str(n - i))
-    if n > 0 and poly[1] != 0:
+    if n > 1 and poly[1] != 0:
         if poly[1] == 1:
             polyarr.append(dummy_variable)
         elif poly[1] == -1:

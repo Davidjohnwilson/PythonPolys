@@ -13,19 +13,31 @@ class DensePoly:
     coeffs = []
 
     def __init__(self, coeffs):
+        if not type(coeffs) is list:
+            raise Exception('Not a valid polynomial')
+        if len(coeffs) == 0:
+            raise Exception('Not a valid polynomial')
+        for i in coeffs:
+            if not type(i) is int:
+                raise Exception('Not a valid polynomial')
+
         tmp_coeffs = coeffs
         # Remove any trailing 0's
-        while tmp_coeffs and (tmp_coeffs[-1] == 0):
+        while tmp_coeffs and len(tmp_coeffs) > 1 and (tmp_coeffs[-1] == 0):
             tmp_coeffs.pop()
         self.coeffs = tmp_coeffs
 
     def degree(self):
         # degree is just the length of the vector of coefficients minus 1
         # (as we don't store trailing 0 coefficients)
-        if len(self.coeffs) == 0:
-            return 0
+        n = len(self.coeffs)
+        if (n == 0) or (n == 1 and self.coeffs[0] == 0):
+            # The degree of the zero polynomial is undefined so is often
+            # defined as either -Inf or -1. We choose -1 as it is more
+            # straightforward to check for.
+            return -1
         else:
-            return len(self.coeffs) - 1
+            return n - 1
 
     def printpoly(self, variable='x'):
         # Printing polynomial with placeholder 'x'
@@ -36,14 +48,23 @@ class DensePoly:
             return ''
         for i in range(1, n - 1):
             # we work backwards
-            if self.coeffs[n - i] != 0:
+            if self.coeffs[n - i] not in [0, 1, -1]:
                 polyarr.append(str(self.coeffs[n - i]) +
                                dummy_variable + '^' + str(n - i))
-        if n > 0 and self.coeffs[1] != 0:
-            polyarr.append(str(self.coeffs[1]) + dummy_variable)
-        if self.coeffs[0] != 0:
+            elif self.coeffs[n - i] == 1:
+                polyarr.append(dummy_variable + '^' + str(n - i))
+            elif self.coeffs[n - i] == -1:
+                polyarr.append('-' + dummy_variable + '^' + str(n - i))
+        if n > 1 and self.coeffs[1] != 0:
+            if self.coeffs[1] == 1:
+                polyarr.append(dummy_variable)
+            elif self.coeffs[1] == -1:
+                polyarr.append('-' + dummy_variable)
+            else:
+                polyarr.append(str(self.coeffs[1]) + dummy_variable)
+        if n == 1 or self.coeffs[0] != 0:
             polyarr.append(str(self.coeffs[0]))
-        return '+'.join(polyarr)
+        return '+'.join(polyarr).replace('+-', '-')
 
     def evalpoly(self, x):
         # Let's use Horner!

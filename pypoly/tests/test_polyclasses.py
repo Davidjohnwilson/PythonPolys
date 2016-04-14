@@ -131,6 +131,37 @@ def test_DensePoly_16():
     assert f.printpoly() == '0'
 
 
+def test_DensePoly_17():
+    # Test: x+1 evaluated at 3
+    poly = [1, 1]
+    val = 3
+    f = DensePoly(poly)
+    assert f.evalpoly(val) == 4
+
+
+def test_DensePoly_18():
+    # Test: x^2+2x+1 at 3
+    poly = [1, 2, 1]
+    val = 3
+    f = DensePoly(poly)
+    assert f.evalpoly(val) == 16
+
+
+def test_DensePoly_19():
+    # Test: zero polynomial and 1
+    poly = [0]
+    val = 3
+    f = DensePoly(poly)
+    assert f.evalpoly(val) == 0
+
+
+def test_DensePoly_20():
+    # Test: Bigger polynomial
+    poly = [-1, 0, 0, 0, 0, 0, 0, 0, -6, 1, 1]
+    val = 3
+    f = DensePoly(poly)
+    assert f.evalpoly(val) == 39365
+
 
 
 
@@ -176,6 +207,42 @@ def test_Converting_Poly_2():
     # Test: x+1 as a Sparse to Dense
     poly_d = [1, 1]
     poly_s = [[0, 1], [1, 1]]
+    f = DensePoly(poly_d)
+    g = SparsePoly(poly_s)
+    assert g.to_dense_poly().coeffs == f.coeffs
+
+
+def test_Converting_Poly_3():
+    # Test: x^2 + 2x - 1 as a Dense to Sparse
+    poly_d = [-1, 2, 1]
+    poly_s = [[0, -1], [1, 2], [2, 1]]
+    f = DensePoly(poly_d)
+    g = SparsePoly(poly_s)
+    assert f.to_sparse_poly().coeffpairs == g.coeffpairs
+
+
+def test_Converting_Poly_4():
+    # Test: x^2 + 2x - 1 as a Sparse to Dense
+    poly_d = [-1, 2, 1]
+    poly_s = [[0, -1], [1, 2], [2, 1]]
+    f = DensePoly(poly_d)
+    g = SparsePoly(poly_s)
+    assert g.to_dense_poly().coeffs == f.coeffs
+
+
+def test_Converting_Poly_5():
+    # Test: x^10 - 1 as a Dense to Sparse
+    poly_d = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    poly_s = [[0, -1], [10, 1]]
+    f = DensePoly(poly_d)
+    g = SparsePoly(poly_s)
+    assert f.to_sparse_poly().coeffpairs == g.coeffpairs
+
+
+def test_Converting_Poly_6():
+    # Test: x^10 - 1 as a Sparse to Dense
+    poly_d = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    poly_s = [[0, -1], [10, 1]]
     f = DensePoly(poly_d)
     g = SparsePoly(poly_s)
     assert g.to_dense_poly().coeffs == f.coeffs

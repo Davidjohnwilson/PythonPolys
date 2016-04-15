@@ -191,6 +191,18 @@ class SparsePoly(Polynomial):
             new_coeffs = [[0, 0]]
         self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
 
+    def add_poly(self, g):
+        poly_two = g
+        if type(poly_two, DensePoly):
+            poly_two = poly_two.to_sparse_poly()
+        
+
+
+    def negate_poly(self):
+        pass
+
+    def subtract_poly(self, g):
+        return self.add_poly(g.negate_poly()).simplify_poly()
 
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 # g = SparsePoly([[0,3],[1,5],[6,7]])

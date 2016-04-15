@@ -107,22 +107,49 @@ class SparsePoly(Polynomial):
     coeffpairs = []
 
     def __init__(self, coeffpairs):
-        self.coeffpairs = coeffpairs
-        # Sort when we save?
+        if not type(coeffpairs) is list:
+            raise Exception('Not a valid polynomial')
+        if len(coeffpairs) == 0:
+            raise Exception('Not a valid polynomial')
+        for l in coeffpairs:
+            if not type(l) is list:
+                raise Exception('Not a valid polynomial')
+            for i in l:
+                if not type(i) is int:
+                    raise Exception('Not a valid polynomial')
+            if l[0] < 0:
+                raise Exception('Not a valid polynomial')
+        self.coeffpairs = sorted(coeffpairs, key=lambda x: x[0])
 
     def degree(self):
         # to check degree we look for largest degree
-        return max([c[0] for c in self.coeffpairs])
+        non_zero_coeffs = [c[0] for c in self.coeffpairs if c[1] != 0]
+        if len(non_zero_coeffs) > 0:
+            return max(non_zero_coeffs)
+        else:
+            return -1
 
     def printpoly(self, variable='x'):
         # print polynomial
         polyarr = []
-        for c in self.coeffpairs:
+        for c in reversed(self.coeffpairs):
+
             if c[0] == 0:
                 polyarr.append(str(c[1]))
+            elif c[0] == 1:
+                if c[1] == 1:
+                    polyarr.append(variable)
+                elif c[1] == -1:
+                    polyarr.append('-' + variable)
+                else:
+                    polyarr.append(str(c[1]) + variable)
+            elif c[1] == 1:
+                polyarr.append(variable + '^' + str(c[0]))
+            elif c[1] == -1:
+                polyarr.append('-' + variable + '^' + str(c[0]))
             else:
                 polyarr.append(str(c[1]) + variable + '^' + str(c[0]))
-        return '+'.join(polyarr)
+        return '+'.join(polyarr).replace('+-', '-')
 
     def evalpoly(self, x):
         # naive evaluation
@@ -147,6 +174,23 @@ class SparsePoly(Polynomial):
         for c in self.coeffpairs:
             polyarr[c[0]] = c[1]
         return DensePoly(polyarr)
+
+    def simplify_poly(self):
+        coeffs = self.coeffpairs
+        coeff_dict = {}
+        for c in coeffs:
+            if c[0] in coeff_dict:
+                coeff_dict[c[0]] += c[1]
+            else:
+                coeff_dict[c[0]] = c[1]
+        new_coeffs = []
+        for k in coeff_dict:
+            if coeff_dict[k] != 0:
+                new_coeffs.append([k, coeff_dict[k]])
+        if len(new_coeffs) == 0:
+            new_coeffs = [[0, 0]]
+        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
+
 
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 # g = SparsePoly([[0,3],[1,5],[6,7]])

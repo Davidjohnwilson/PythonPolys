@@ -18,8 +18,8 @@ def test_DensePoly_1():
 
 
 def test_DensePoly_2():
-    # Test: x+1 as a densepoly
-    poly = [1, 1]
+    # Test: x^2 + x +1 as a densepoly
+    poly = [1, 1, 1]
     f = DensePoly(poly)
     assert isinstance(f, DensePoly)
 
@@ -163,12 +163,6 @@ def test_DensePoly_20():
     assert f.evalpoly(val) == 39365
 
 
-
-
-
-
-
-
 # ==================================
 # Test suite 2: SparsePoly
 # ==================================
@@ -176,16 +170,198 @@ def test_DensePoly_20():
 
 def test_SparsePoly_1():
     # Test: x+1 as a Polynomial
-    poly = [1, 1]
+    poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert isinstance(f, Polynomial)
 
 
 def test_SparsePoly_2():
-    # Test: x+1 as a SparsePoly
-    poly = [1, 1]
+    # Test: x^2+x+1 as a SparsePoly
+    poly = [[0, 1], [1, 1], [2, 1]]
     f = SparsePoly(poly)
     assert isinstance(f, SparsePoly)
+
+
+def test_SparsePoly_3():
+    # Test: x+1 with zeros as a SparsePoly
+    poly = [[0, 1], [1, 1], [2, 0]]
+    f = SparsePoly(poly)
+    assert isinstance(f, SparsePoly)
+
+
+def test_SparsePoly_4():
+    # Test: zero polynomial
+    poly = [[0, 0]]
+    f = SparsePoly(poly)
+    assert isinstance(f, SparsePoly)
+
+
+def test_SparsePoly_5():
+    # Test: invalid polynomial
+    poly = 1
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_6():
+    # Test: invalid polynomial
+    poly = 'a'
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_7():
+    # Test: invalid polynomial
+    poly = [[0, 1], [2, 'a']]
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_8():
+    # Test: invalid polynomial
+    poly = [[0, 1], [-1, 1]]
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_9():
+    # Test: x+1 degree
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.degree() == 1
+
+
+def test_SparsePoly_10():
+    # Test: x+1 degree with zeros
+    poly = [[0, 1], [1, 1], [2, 0]]
+    f = SparsePoly(poly)
+    assert f.degree() == 1
+
+
+def test_SparsePoly_11():
+    # Test: x^10+1 degree
+    poly = [[0, 1],[10, 1]]
+    f = SparsePoly(poly)
+    assert f.degree() == 10
+
+
+def test_SparsePoly_12():
+    # Test: constant polynomial
+    poly = [[0,1]]
+    f = SparsePoly(poly)
+    assert f.degree() == 0
+
+
+def test_SparsePoly_13():
+    # Test: zero polynomial (undefined degree so -1)
+    poly = [[0,0]]
+    f = SparsePoly(poly)
+    assert f.degree() == -1
+
+
+def test_SparsePoly_14():
+    # Test: print poly x+1
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == 'x+1'
+
+
+def test_SparsePoly_15():
+    # Test: print poly -x-1
+    poly = [[0, -1], [1, -1]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '-x-1'
+
+
+def test_SparsePoly_16():
+    # Test: print poly -x-1 out of order
+    poly = [[1, -1], [0, -1]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '-x-1'
+
+
+def test_SparsePoly_17():
+    # Test: print poly 1
+    poly = [[0,1]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '1'
+
+
+def test_SparsePoly_18():
+    # Test: print poly 0
+    poly = [[0, 0]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '0'
+
+
+def test_SparsePoly_19():
+    # Test: x+1 evaluated at 3
+    poly = [[0, 1], [1, 1]]
+    val = 3
+    f = SparsePoly(poly)
+    assert f.evalpoly(val) == 4
+
+
+def test_SparsePoly_20():
+    # Test: x^2+2x+1 at 3
+    poly = [[0, 1], [1, 2], [2, 1]]
+    val = 3
+    f = SparsePoly(poly)
+    assert f.evalpoly(val) == 16
+
+
+def test_SparsePoly_21():
+    # Test: zero polynomial and 1
+    poly = [[0, 0]]
+    val = 3
+    f = SparsePoly(poly)
+    assert f.evalpoly(val) == 0
+
+
+def test_SparsePoly_22():
+    # Test: Bigger polynomial
+    poly = [[0, -1], [8, -6], [9, 1], [10, 1]]
+    val = 3
+    f = SparsePoly(poly)
+    assert f.evalpoly(val) == 39365
+
+
+def test_SparsePoly_23():
+    # Test: Simplify polynomial
+    poly = [[0, 1], [1, 1], [1, -1]]
+    f = SparsePoly(poly)
+    f.simplify_poly()
+    assert f.printpoly() == '1'
+
+
+def test_SparsePoly_24():
+    # Test: Simplify polynomial
+    poly = [[1, 1], [1, -1]]
+    f = SparsePoly(poly)
+    f.simplify_poly()
+    assert f.printpoly() == '0'
+
+
+def test_SparsePoly_25():
+    # Test: Simplify polynomial
+    poly = [[1, 1], [1, 1]]
+    f = SparsePoly(poly)
+    f.simplify_poly()
+    assert f.printpoly() == '2x'
+
+
 
 
 

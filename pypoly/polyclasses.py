@@ -200,7 +200,10 @@ class SparsePoly(Polynomial):
         return h
 
     def negate_poly(self):
-        pass
+        coeffs = self.coeffpairs
+        for c in coeffs:
+            c[1] = -c[1]
+        return SparsePoly(coeffs)
 
     def subtract_poly(self, g):
         return self.add_poly(g.negate_poly()).simplify_poly()

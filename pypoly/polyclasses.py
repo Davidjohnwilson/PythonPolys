@@ -206,7 +206,9 @@ class SparsePoly(Polynomial):
         return SparsePoly(coeffs)
 
     def subtract_poly(self, g):
-        return self.add_poly(g.negate_poly()).simplify_poly()
+        h = self.add_poly(g.negate_poly())
+        h.simplify_poly()
+        return h
 
     def differentiate_poly(self):
         pass

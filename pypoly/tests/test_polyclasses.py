@@ -388,11 +388,20 @@ def test_SparsePoly_27():
     assert f.add_poly(g).printpoly() == 'x^101+x^100'
 
 
-def test_SparsePoly_27():
+def test_SparsePoly_28():
     # Test: Negate x+1
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.negate_poly().printpoly() == '-x-1'
+
+
+def test_SparsePoly_29():
+    # Test: Subtract x+1 from x^2+x+1
+    poly_f = [[0, 1], [1, 1], [2, 1]]
+    poly_g = [[0, 1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    assert f.subtract_poly(g).printpoly() == 'x^2'
 
 
 

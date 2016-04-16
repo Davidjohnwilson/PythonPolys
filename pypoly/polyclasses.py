@@ -193,16 +193,27 @@ class SparsePoly(Polynomial):
 
     def add_poly(self, g):
         poly_two = g
-        if type(poly_two, DensePoly):
+        if type(poly_two) is DensePoly:
             poly_two = poly_two.to_sparse_poly()
-        
-
+        h = SparsePoly(self.coeffpairs + g.coeffpairs)
+        h.simplify_poly()
+        return h
 
     def negate_poly(self):
         pass
 
     def subtract_poly(self, g):
         return self.add_poly(g.negate_poly()).simplify_poly()
+
+    def differentiate_poly(self):
+        pass
+
+    def integrate_poly(self, C=0):
+        pass
+
+    def definite_integral(self, a, b):
+        return (self.integrate_poly().evalpoly(b) -
+                self.integrate_poly().evalpoly(a))
 
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 # g = SparsePoly([[0,3],[1,5],[6,7]])

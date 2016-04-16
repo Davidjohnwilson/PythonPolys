@@ -191,6 +191,34 @@ class SparsePoly(Polynomial):
             new_coeffs = [[0, 0]]
         self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
 
+    def add_poly(self, g):
+        poly_two = g
+        if type(poly_two) is DensePoly:
+            poly_two = poly_two.to_sparse_poly()
+        h = SparsePoly(self.coeffpairs + g.coeffpairs)
+        h.simplify_poly()
+        return h
+
+    def negate_poly(self):
+        coeffs = self.coeffpairs
+        for c in coeffs:
+            c[1] = -c[1]
+        return SparsePoly(coeffs)
+
+    def subtract_poly(self, g):
+        h = self.add_poly(g.negate_poly())
+        h.simplify_poly()
+        return h
+
+    def differentiate_poly(self):
+        pass
+
+    def integrate_poly(self, C=0):
+        pass
+
+    def definite_integral(self, a, b):
+        return (self.integrate_poly().evalpoly(b) -
+                self.integrate_poly().evalpoly(a))
 
 # print("g = SparsePoly([[0,3],[1,5],[6,7]])")
 # g = SparsePoly([[0,3],[1,5],[6,7]])

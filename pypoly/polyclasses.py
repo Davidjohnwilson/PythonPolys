@@ -211,7 +211,14 @@ class SparsePoly(Polynomial):
         return h
 
     def differentiate_poly(self):
-        pass
+        coeffs = self.coeffpairs
+        diff_coeffs = []
+        for c in coeffs:
+            if c[0] != 0:
+                diff_coeffs.append([c[0] - 1, c[0] * c[1]])
+        if len(diff_coeffs) == 0:
+            diff_coeffs = [[0, 0]]
+        return SparsePoly(diff_coeffs)
 
     def integrate_poly(self, C=0):
         pass

@@ -404,6 +404,19 @@ def test_SparsePoly_29():
     assert f.subtract_poly(g).printpoly() == 'x^2'
 
 
+def test_SparsePoly_30():
+    # Test: Differentiate 3x^2+x+1 
+    poly = [[0, 1], [1, 1], [2, 3]]
+    f = SparsePoly(poly)
+    assert f.differentiate_poly().printpoly() == '6x+1'
+
+
+def test_SparsePoly_31():
+    # Test: Differentiate 1 
+    poly = [[0, 1]]
+    f = SparsePoly(poly)
+    assert f.differentiate_poly().printpoly() == '0'
+
 
 # ==================================
 # Test suite 3: Converting Polys

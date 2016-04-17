@@ -299,6 +299,27 @@ def test_SparsePoly_17():
     assert f.printpoly() == '1'
 
 
+def test_SparsePoly_17b():
+    # Test: print poly -1
+    poly = [[0,-1]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '-1'
+
+
+def test_SparsePoly_17c():
+    # Test: print poly 1.0
+    poly = [[0,1.0]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '1'
+
+
+def test_SparsePoly_17d():
+    # Test: print poly -1.0
+    poly = [[0,-1.0]]
+    f = SparsePoly(poly)
+    assert f.printpoly() == '-1'
+
+
 def test_SparsePoly_18():
     # Test: print poly 0
     poly = [[0, 0]]
@@ -404,6 +425,47 @@ def test_SparsePoly_29():
     assert f.subtract_poly(g).printpoly() == 'x^2'
 
 
+def test_SparsePoly_30():
+    # Test: Differentiate 3x^2+x+1 
+    poly = [[0, 1], [1, 1], [2, 3]]
+    f = SparsePoly(poly)
+    assert f.differentiate_poly().printpoly() == '6x+1'
+
+
+def test_SparsePoly_31():
+    # Test: Differentiate 1 
+    poly = [[0, 1]]
+    f = SparsePoly(poly)
+    assert f.differentiate_poly().printpoly() == '0'
+
+
+def test_SparsePoly_32():
+    # Test: Integrate x+1 
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.integrate_poly().printpoly() == '0.5x^2+x'
+
+
+def test_SparsePoly_33():
+    # Test: Integrate x+1 with constant
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.integrate_poly(10).printpoly() == '0.5x^2+x+10'
+
+
+def test_SparsePoly_34():
+    # Test: Definite integral x+1 
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.definite_integral(10, 15) == 67.5
+
+
+
+def test_SparsePoly_35():
+    # Test: Definite integral x^2+x+1 
+    poly = [[0, 1], [1, 1], [2, 1]]
+    f = SparsePoly(poly)
+    assert "%.1f" % f.definite_integral(0, 50) == '42966.7'
 
 # ==================================
 # Test suite 3: Converting Polys

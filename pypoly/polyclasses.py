@@ -29,7 +29,7 @@ class DensePoly(Polynomial):
         if len(coeffs) == 0:
             raise Exception('Not a valid polynomial')
         for i in coeffs:
-            if not type(i) is int:
+            if not type(i) in (int, float):
                 raise Exception('Not a valid polynomial')
 
         tmp_coeffs = coeffs
@@ -115,7 +115,7 @@ class SparsePoly(Polynomial):
             if not type(l) is list:
                 raise Exception('Not a valid polynomial')
             for i in l:
-                if not type(i) is int:
+                if not type(i) in (int, float):
                     raise Exception('Not a valid polynomial')
             if l[0] < 0:
                 raise Exception('Not a valid polynomial')
@@ -135,17 +135,22 @@ class SparsePoly(Polynomial):
         for c in reversed(self.coeffpairs):
 
             if c[0] == 0:
-                polyarr.append(str(c[1]))
+                if c[1] == 1.0:
+                    polyarr.append('1')
+                elif c[1] == -1.0:
+                    polyarr.append('-1')
+                else:
+                    polyarr.append(str(c[1]))
             elif c[0] == 1:
-                if c[1] == 1:
+                if c[1] == 1 or c[1] == 1.0:
                     polyarr.append(variable)
-                elif c[1] == -1:
+                elif c[1] == -1 or c[1] == -1.0:
                     polyarr.append('-' + variable)
                 else:
                     polyarr.append(str(c[1]) + variable)
-            elif c[1] == 1:
+            elif c[1] == 1 or c[1] == 1.0:
                 polyarr.append(variable + '^' + str(c[0]))
-            elif c[1] == -1:
+            elif c[1] == -1 or c[1] == -1.0:
                 polyarr.append('-' + variable + '^' + str(c[0]))
             else:
                 polyarr.append(str(c[1]) + variable + '^' + str(c[0]))
@@ -211,10 +216,23 @@ class SparsePoly(Polynomial):
         return h
 
     def differentiate_poly(self):
-        pass
+        coeffs = self.coeffpairs
+        diff_coeffs = []
+        for c in coeffs:
+            if c[0] != 0:
+                diff_coeffs.append([c[0] - 1, c[0] * c[1]])
+        if len(diff_coeffs) == 0:
+            diff_coeffs = [[0, 0]]
+        return SparsePoly(diff_coeffs)
 
     def integrate_poly(self, C=0):
-        pass
+        coeffs = self.coeffpairs
+        int_coeffs = []
+        if C != 0:
+            int_coeffs.append([0, C])
+        for c in coeffs:
+            int_coeffs.append([c[0] + 1, 1.0 * c[1] / (c[0] + 1)])
+        return SparsePoly(int_coeffs)
 
     def definite_integral(self, a, b):
         return (self.integrate_poly().evalpoly(b) -

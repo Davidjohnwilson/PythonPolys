@@ -364,7 +364,7 @@ def test_SparsePoly_23():
     poly = [[0, 1], [1, 1], [1, -1]]
     f = SparsePoly(poly)
     f.simplify_poly()
-    assert f.printpoly() == '1'
+    assert SparsePoly(poly).simplify_poly().printpoly() == '1'
 
 
 def test_SparsePoly_24():
@@ -372,14 +372,36 @@ def test_SparsePoly_24():
     poly = [[1, 1], [1, -1]]
     f = SparsePoly(poly)
     f.simplify_poly()
-    assert f.printpoly() == '0'
+    assert SparsePoly(poly).simplify_poly().printpoly() == '0'
 
 
 def test_SparsePoly_25():
     # Test: Simplify polynomial
     poly = [[1, 1], [1, 1]]
+    assert SparsePoly(poly).simplify_poly().printpoly() == '2x'
+
+
+def test_SparsePoly_23b():
+    # Test: Simplify polynomial
+    poly = [[0, 1], [1, 1], [1, -1]]
     f = SparsePoly(poly)
-    f.simplify_poly()
+    f.simplify_poly_inplace()
+    assert f.printpoly() == '1'
+
+
+def test_SparsePoly_24b():
+    # Test: Simplify polynomial
+    poly = [[1, 1], [1, -1]]
+    f = SparsePoly(poly)
+    f.simplify_poly_inplace()
+    assert f.printpoly() == '0'
+
+
+def test_SparsePoly_25b():
+    # Test: Simplify polynomial
+    poly = [[1, 1], [1, 1]]
+    f = SparsePoly(poly)
+    f.simplify_poly_inplace()
     assert f.printpoly() == '2x'
 
 
@@ -423,6 +445,15 @@ def test_SparsePoly_29():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     assert f.subtract_poly(g).printpoly() == 'x^2'
+
+def test_SparsePoly_29b():
+    # Test: Multiply x+1 and x^2+x+1
+    poly_f = [[0, 1], [1, 1], [2, 1]]
+    poly_g = [[0, 1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    assert f.multiply_poly(g).printpoly() == 'x^3+2x^2+2x+1'
+
 
 
 def test_SparsePoly_30():

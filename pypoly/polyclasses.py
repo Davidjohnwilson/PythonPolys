@@ -93,20 +93,17 @@ class DensePoly(Polynomial):
                 polyarr.append([i, self.coeffs[i]])
         return SparsePoly(polyarr)
 
-# print("f = DensePoly([3,2,5]):")
-# f = DensePoly([3,2,5])
-# print(f.degree())
-# print(f.printpoly())
-# print(f.evalpoly(2))
 
 # Sparse Poly
-
+# We store polynomials in a sparse format - an array of
+# arrays of the form [exponent, coefficient]
 
 class SparsePoly(Polynomial):
-    'Polynomials stored in a sparse manner'
+    'Polynomials stored in a sparse manner ([exp, coeff])'
     coeffpairs = []
 
     def __init__(self, coeffpairs):
+        # Check for validity when initializing polynomial
         if not type(coeffpairs) is list:
             raise Exception('Not a valid polynomial')
         if len(coeffpairs) == 0:
@@ -119,6 +116,9 @@ class SparsePoly(Polynomial):
                     raise Exception('Not a valid polynomial')
             if l[0] < 0:
                 raise Exception('Not a valid polynomial')
+        # We sort the coeffs - this is partly to print nicely and
+        # it can also save some time in evaluating due to storing
+        # the previously computed power.
         self.coeffpairs = sorted(coeffpairs, key=lambda x: x[0])
 
     def degree(self):
@@ -130,11 +130,11 @@ class SparsePoly(Polynomial):
             return -1
 
     def printpoly(self, variable='x'):
-        # print polynomial
+        # print polynomial in reverse order
         polyarr = []
         for c in reversed(self.coeffpairs):
-
             if c[0] == 0:
+                # We treat the constant term separately
                 if c[1] == 1.0:
                     polyarr.append('1')
                 elif c[1] == -1.0:
@@ -142,6 +142,7 @@ class SparsePoly(Polynomial):
                 else:
                     polyarr.append(str(c[1]))
             elif c[0] == 1:
+                # We treat the single exponent term separately
                 if c[1] == 1 or c[1] == 1.0:
                     polyarr.append(variable)
                 elif c[1] == -1 or c[1] == -1.0:
@@ -159,7 +160,8 @@ class SparsePoly(Polynomial):
     def evalpoly(self, x):
         # naive evaluation
         # We store partial power values to try and save on computation
-        # Much quicker when powers in ascending order
+        # Much quicker when powers in ascending order which should be
+        # expected from initializing.
         val = 0
         current_pow = 0
         current_pow_val = 1
@@ -181,6 +183,8 @@ class SparsePoly(Polynomial):
         return DensePoly(polyarr)
 
     def simplify_poly(self):
+        # This function simplifies a polynomial down
+        # in particular if any term has a zero coefficient
         coeffs = self.coeffpairs
         coeff_dict = {}
         for c in coeffs:
@@ -194,28 +198,43 @@ class SparsePoly(Polynomial):
                 new_coeffs.append([k, coeff_dict[k]])
         if len(new_coeffs) == 0:
             new_coeffs = [[0, 0]]
-        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
+        return SparsePoly(sorted(new_coeffs, key=lambda x: x[0]))
+
+    def simplify_poly_inplace(self):
+        # This function works like simplify_poly but does so
+        # in place.
+        h = self.simplify_poly()
+        self.coeffpairs = h.coeffpairs
 
     def add_poly(self, g):
+        # We allow for DensePoly by converting
+        # Addition is simply appending two arrays and simplify
         poly_two = g
         if type(poly_two) is DensePoly:
             poly_two = poly_two.to_sparse_poly()
-        h = SparsePoly(self.coeffpairs + g.coeffpairs)
-        h.simplify_poly()
-        return h
+        return SparsePoly(self.coeffpairs + g.coeffpairs).simplify_poly()
 
     def negate_poly(self):
+        # Negating a polynomial is just negating coefficients
         coeffs = self.coeffpairs
         for c in coeffs:
             c[1] = -c[1]
         return SparsePoly(coeffs)
 
     def subtract_poly(self, g):
-        h = self.add_poly(g.negate_poly())
-        h.simplify_poly()
-        return h
+        # To subtract we negate and add
+        return self.add_poly(g.negate_poly()).simplify_poly()
+
+    def multiply_poly(self, g):
+        # Multiplying is done my combining lists and simplifying
+        coeffs = self.coeffpairs
+        g_coeffs = g.coeffpairs
+        mult_coeffs = [[f_c[0] + g_c[0], f_c[1] * g_c[1]]
+                       for f_c in coeffs for g_c in g_coeffs]
+        return SparsePoly(mult_coeffs).simplify_poly()
 
     def differentiate_poly(self):
+        # To differentiate we just alter each coefficient
         coeffs = self.coeffpairs
         diff_coeffs = []
         for c in coeffs:
@@ -226,6 +245,8 @@ class SparsePoly(Polynomial):
         return SparsePoly(diff_coeffs)
 
     def integrate_poly(self, C=0):
+        # We allow for an arbitrary choice of integration constant (default 0)
+        # Note we also end up with non-integer coefficients
         coeffs = self.coeffpairs
         int_coeffs = []
         if C != 0:
@@ -235,11 +256,7 @@ class SparsePoly(Polynomial):
         return SparsePoly(int_coeffs)
 
     def definite_integral(self, a, b):
+        # To compute the definite integral we just combine integration
+        # and evaluation.
         return (self.integrate_poly().evalpoly(b) -
                 self.integrate_poly().evalpoly(a))
-
-# print("g = SparsePoly([[0,3],[1,5],[6,7]])")
-# g = SparsePoly([[0,3],[1,5],[6,7]])
-# print(g.degree())
-# print(g.printpoly())
-# print(g.evalpoly(2))

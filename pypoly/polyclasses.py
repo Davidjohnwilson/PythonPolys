@@ -3,6 +3,7 @@ from __future__ import division
 
 # Polynomial classes
 from math import pow
+from math import sqrt
 
 
 # General Polynomial Class
@@ -260,3 +261,41 @@ class SparsePoly(Polynomial):
         # and evaluation.
         return (self.integrate_poly().evalpoly(b) -
                 self.integrate_poly().evalpoly(a))
+
+    def numeric_solve_poly(self):
+        # Solves polynomial and returns a list of real solutions
+        if self.degree() == 0:
+            raise Exception('Cannot solve constant polynomials.')
+        elif self.degree() > 2:
+            raise Exception('Cannot solve polynomials of degree %i.'
+                            % self.degree())
+
+        # linear polynomials
+        if self.degree() == 1:
+            return [1.0 * (-self.coeffpairs[0][1]) / self.coeffpairs[1][1]]
+
+        # quadratic polynomials
+        a = 0
+        b = 0
+        c = 0
+
+        if self.degree() == 2:
+            for c_p in self.coeffpairs:
+                if c_p[0] == 2:
+                    a = c_p[1]
+                elif c_p[0] == 1:
+                    b = c_p[1]
+                elif c_p[0] == 0:
+                    c = c_p[1]
+
+            # Note that as degree==2 we know a != 0
+
+            discrim = b * b - 4 * a * c
+
+            if discrim == 0:
+                return [1.0 * -b / (2 * a)]
+            elif discrim > 0:
+                return sorted([(1.0 * -b + sqrt(discrim)) / (2 * a),
+                               (1.0 * -b - sqrt(discrim)) / (2 * a)])
+            else:
+                return []

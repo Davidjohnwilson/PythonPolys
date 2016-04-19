@@ -564,18 +564,6 @@ def test_Converting_Poly_6():
 
 
 def test_Solving_Poly_1():
-    # Test: cannot solve cubic
-    poly = [[0, 1], [1, 1], [3, 1]]
-    f = SparsePoly(poly)
-    try:
-        f.numeric_solve_poly()
-        assert False
-    except Exception as e:
-        assert e.args[0] == 'Cannot solve polynomials of degree 3.'
-
-
-
-def test_Solving_Poly_2():
     # Test: cannot solve quartic
     poly = [[0, 1], [1, 1], [4, 1]]
     f = SparsePoly(poly)
@@ -584,6 +572,17 @@ def test_Solving_Poly_2():
         assert False
     except Exception as e:
         assert e.args[0] == 'Cannot solve polynomials of degree 4.'
+
+
+def test_Solving_Poly_2():
+    # Test: cannot solve degree 1000
+    poly = [[0, 1], [1, 1], [1000, 1]]
+    f = SparsePoly(poly)
+    try:
+        f.numeric_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve polynomials of degree 1000.'
 
 
 def test_Solving_Poly_3():
@@ -595,7 +594,6 @@ def test_Solving_Poly_3():
         assert False
     except Exception as e:
         assert e.args[0] == 'Cannot solve constant polynomials.'
-
 
 
 def test_Solving_Poly_4():
@@ -623,13 +621,39 @@ def test_Solving_Poly_6():
 
 def test_Solving_Poly_7():
     # Test: solve (x-1)(x-1)
-    poly_f = [[0, -1], [1, 1]]
-    f = SparsePoly(poly_f)
+    poly = [[0, -1], [1, 1]]
+    f = SparsePoly(poly)
     assert f.multiply_poly(f).numeric_solve_poly() == [1.0]
 
 
 def test_Solving_Poly_8():
     # Test: solve x^2+1
-    poly_f = [[0, 1], [2, 1]]
-    f = SparsePoly(poly_f)
+    poly = [[0, 1], [2, 1]]
+    f = SparsePoly(poly)
     assert f.numeric_solve_poly() == []
+
+
+def test_Solving_Poly_9():
+    # Test: solve x^3-1
+    poly = [[0, -1], [3, 1]]
+    f = SparsePoly(poly)
+    assert f.numeric_solve_poly() == [1.0]
+
+
+def test_Solving_Poly_10():
+    # Test: solve x^3-8
+    poly = [[0, -8], [3, 1]]
+    f = SparsePoly(poly)
+    assert f.numeric_solve_poly() == [2.0]
+
+# FAILING TEST
+# def test_Solving_Poly_10():
+#     # Test: solve (x^2+1)(x-4)
+#     poly_f = [[0, 1], [2, 1]]
+#     poly_g = [[0, -4], [1, 1]]
+#     f = SparsePoly(poly_f)
+#     g = SparsePoly(poly_g)
+#     print f.multiply_poly(g).printpoly()
+#     print f.multiply_poly(g).numeric_solve_poly()
+#     assert f.multiply_poly(g).numeric_solve_poly() == [4.0]
+

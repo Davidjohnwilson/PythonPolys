@@ -266,7 +266,7 @@ class SparsePoly(Polynomial):
         # Solves polynomial and returns a list of real solutions
         if self.degree() == 0:
             raise Exception('Cannot solve constant polynomials.')
-        elif self.degree() > 2:
+        elif self.degree() > 3:
             raise Exception('Cannot solve polynomials of degree %i.'
                             % self.degree())
 
@@ -275,11 +275,10 @@ class SparsePoly(Polynomial):
             return [1.0 * (-self.coeffpairs[0][1]) / self.coeffpairs[1][1]]
 
         # quadratic polynomials
-        a = 0
-        b = 0
-        c = 0
-
         if self.degree() == 2:
+            a = 0
+            b = 0
+            c = 0
             for c_p in self.coeffpairs:
                 if c_p[0] == 2:
                     a = c_p[1]
@@ -299,3 +298,25 @@ class SparsePoly(Polynomial):
                                (1.0 * -b - sqrt(discrim)) / (2 * a)])
             else:
                 return []
+
+        # cubic polynomials
+        if self.degree() == 3:
+            a = 0
+            b = 0
+            c = 0
+            d = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 3:
+                    a = c_p[1]
+                elif c_p[0] == 2:
+                    b = c_p[1]
+                elif c_p[0] == 1:
+                    c = c_p[1]
+                elif c_p[0] == 0:
+                    d = c_p[1]
+            p = 1.0 * -b / (3 * a)
+            q = 1.0 * p * p * p + ((b * c - 3 * a * d) / (6 * a * a))
+            r = 1.0 * c / (3 * a)
+            x = pow(q + sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + \
+                pow(q - sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + p
+            return [x]

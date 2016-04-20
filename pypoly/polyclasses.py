@@ -117,10 +117,25 @@ class SparsePoly(Polynomial):
                     raise Exception('Not a valid polynomial')
             if l[0] < 0:
                 raise Exception('Not a valid polynomial')
+        
+        # We simplify the coefficients. This combines any coefficients
+        # for the same degree.
+        coeff_dict = {}
+        for c in coeffpairs:
+            if c[0] in coeff_dict:
+                coeff_dict[c[0]] += c[1]
+            else:
+                coeff_dict[c[0]] = c[1]
+        new_coeffs = []
+        for k in coeff_dict:
+            if coeff_dict[k] != 0:
+                new_coeffs.append([k, coeff_dict[k]])
+        if len(new_coeffs) == 0:
+            new_coeffs = [[0, 0]]
         # We sort the coeffs - this is partly to print nicely and
         # it can also save some time in evaluating due to storing
         # the previously computed power.
-        self.coeffpairs = sorted(coeffpairs, key=lambda x: x[0])
+        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
 
     def degree(self):
         # to check degree we look for largest degree
@@ -217,9 +232,11 @@ class SparsePoly(Polynomial):
 
     def negate_poly(self):
         # Negating a polynomial is just negating coefficients
-        coeffs = self.coeffpairs
-        for c in coeffs:
-            c[1] = -c[1]
+        # Note we have to create a new array to avoid changing 
+        # coeffpairs inplace.
+        coeffs = []
+        for c in self.coeffpairs:
+            coeffs.append([c[0], -c[1]])
         return SparsePoly(coeffs)
 
     def subtract_poly(self, g):

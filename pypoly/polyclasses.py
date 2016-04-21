@@ -3,6 +3,7 @@ from __future__ import division
 
 # Polynomial classes
 from math import pow
+from math import sqrt
 
 
 # General Polynomial Class
@@ -116,10 +117,25 @@ class SparsePoly(Polynomial):
                     raise Exception('Not a valid polynomial')
             if l[0] < 0:
                 raise Exception('Not a valid polynomial')
+
+        # We simplify the coefficients. This combines any coefficients
+        # for the same degree.
+        coeff_dict = {}
+        for c in coeffpairs:
+            if c[0] in coeff_dict:
+                coeff_dict[c[0]] += c[1]
+            else:
+                coeff_dict[c[0]] = c[1]
+        new_coeffs = []
+        for k in coeff_dict:
+            if coeff_dict[k] != 0:
+                new_coeffs.append([k, coeff_dict[k]])
+        if len(new_coeffs) == 0:
+            new_coeffs = [[0, 0]]
         # We sort the coeffs - this is partly to print nicely and
         # it can also save some time in evaluating due to storing
         # the previously computed power.
-        self.coeffpairs = sorted(coeffpairs, key=lambda x: x[0])
+        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
 
     def degree(self):
         # to check degree we look for largest degree
@@ -216,9 +232,11 @@ class SparsePoly(Polynomial):
 
     def negate_poly(self):
         # Negating a polynomial is just negating coefficients
-        coeffs = self.coeffpairs
-        for c in coeffs:
-            c[1] = -c[1]
+        # Note we have to create a new array to avoid changing
+        # coeffpairs inplace.
+        coeffs = []
+        for c in self.coeffpairs:
+            coeffs.append([c[0], -c[1]])
         return SparsePoly(coeffs)
 
     def subtract_poly(self, g):
@@ -260,3 +278,126 @@ class SparsePoly(Polynomial):
         # and evaluation.
         return (self.integrate_poly().evalpoly(b) -
                 self.integrate_poly().evalpoly(a))
+
+    def numeric_solve_poly(self):
+        # Solves polynomial and returns a list of real solutions
+        if self.degree() < 1:
+            # Note that <1 includes zero polynomial
+            raise Exception('Cannot solve constant polynomials.')
+        elif self.degree() > 3:
+            raise Exception('Cannot solve polynomials of degree %i.'
+                            % self.degree())
+
+        # linear polynomials
+        if self.degree() == 1:
+            a = 0
+            b = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 1:
+                    a = c_p[1]
+                elif c_p[0] == 0:
+                    b = c_p[1]
+            return [1.0 * (-b) / a]
+
+        # quadratic polynomials
+        if self.degree() == 2:
+            a = 0
+            b = 0
+            c = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 2:
+                    a = c_p[1]
+                elif c_p[0] == 1:
+                    b = c_p[1]
+                elif c_p[0] == 0:
+                    c = c_p[1]
+
+            # Note that as degree==2 we know a != 0
+
+            discrim = b * b - 4 * a * c
+
+            if discrim == 0:
+                return [1.0 * -b / (2 * a)]
+            elif discrim > 0:
+                return sorted([(1.0 * -b + sqrt(discrim)) / (2 * a),
+                               (1.0 * -b - sqrt(discrim)) / (2 * a)])
+            else:
+                return []
+
+        # cubic polynomials
+        if self.degree() == 3:
+            a = 0
+            b = 0
+            c = 0
+            d = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 3:
+                    a = c_p[1]
+                elif c_p[0] == 2:
+                    b = c_p[1]
+                elif c_p[0] == 1:
+                    c = c_p[1]
+                elif c_p[0] == 0:
+                    d = c_p[1]
+            p = 1.0 * -b / (3 * a)
+            q = 1.0 * p * p * p + ((b * c - 3 * a * d) / (6 * a * a))
+            r = 1.0 * c / (3 * a)
+            x = pow(q + sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + \
+                pow(q - sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + p
+            return [x]
+
+    def symbolic_solve_poly(self):
+        # Solves polynomial symbolically and returns a list of strings
+        # representing real solutions
+        if self.degree() < 1:
+            # Note that <1 includes zero polynomial
+            raise Exception('Cannot solve constant polynomials.')
+        elif self.degree() > 3:
+            raise Exception('Cannot solve polynomials of degree %i.'
+                            % self.degree())
+
+        # linear polynomials
+        if self.degree() == 1:
+            a = 0
+            b = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 1:
+                    a = c_p[1]
+                elif c_p[0] == 0:
+                    b = c_p[1]
+            if b >= a and b % a == 0:
+                return [str(int(-b / a))]
+            else:
+                return ['%i/%i' % (-b, a)]
+
+        # quadratic polynomials
+        if self.degree() == 2:
+            a = 0
+            b = 0
+            c = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 2:
+                    a = c_p[1]
+                elif c_p[0] == 1:
+                    b = c_p[1]
+                elif c_p[0] == 0:
+                    c = c_p[1]
+
+            # Note that as degree==2 we know a != 0
+            discrim = b * b - 4 * a * c
+
+            if discrim == 0:
+                if b % (2 * a) == 0:
+                    return ['%i' % int(-b / (2 * a))]
+                else:
+                    return ['%i/%i' % (-b, (2 * a))]
+            elif discrim > 0:
+
+                # Square root exact
+                if sqrt(discrim) == int(sqrt(discrim)):
+                    return ['[%i±%i]/%i' % (-b, sqrt(discrim), 2 * a)]
+
+                # Not exact
+                return ['[%i±√[%i]]/%i' % (-b, discrim, 2 * a)]
+            else:
+                return ['[%i±√[%i]]/%i' % (-b, discrim, 2 * a)]

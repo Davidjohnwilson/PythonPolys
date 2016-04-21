@@ -792,20 +792,30 @@ def test_Solving_Poly_3():
 
 
 def test_Solving_Poly_4():
+    # Test: cannot solve zero polynomial
+    poly = [[0, 0]]
+    f = SparsePoly(poly)
+    try:
+        f.numeric_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve constant polynomials.'
+
+def test_Solving_Poly_5():
     # Test: solve x+1
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == [-1.0]
 
 
-def test_Solving_Poly_5():
+def test_Solving_Poly_6():
     # Test: solve 2x+1
     poly = [[0, 1], [1, 2]]
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == [-0.5]
 
 
-def test_Solving_Poly_6():
+def test_Solving_Poly_7():
     # Test: solve (x-1)(x-2)
     poly_f = [[0, -1], [1, 1]]
     poly_g = [[0, -2], [1, 1]]
@@ -814,7 +824,7 @@ def test_Solving_Poly_6():
     assert f.multiply_poly(g).numeric_solve_poly() == [1.0, 2.0]
 
 
-def test_Solving_Poly_7():
+def test_Solving_Poly_8():
     # Test: solve x^2-2
     poly = [[0, -2], [2, 1]]
     f = SparsePoly(poly)
@@ -822,28 +832,28 @@ def test_Solving_Poly_7():
     assert "%.3f" % f.numeric_solve_poly()[1] == '1.414'
 
 
-def test_Solving_Poly_8():
+def test_Solving_Poly_9():
     # Test: solve (x-1)(x-1)
     poly = [[0, -1], [1, 1]]
     f = SparsePoly(poly)
     assert f.multiply_poly(f).numeric_solve_poly() == [1.0]
 
 
-def test_Solving_Poly_9():
+def test_Solving_Poly_10():
     # Test: solve x^2+1
     poly = [[0, 1], [2, 1]]
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == []
 
 
-def test_Solving_Poly_10():
+def test_Solving_Poly_11():
     # Test: solve x^3-1
     poly = [[0, -1], [3, 1]]
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == [1.0]
 
 
-def test_Solving_Poly_11():
+def test_Solving_Poly_12():
     # Test: solve x^3-8
     poly = [[0, -8], [3, 1]]
     f = SparsePoly(poly)
@@ -859,4 +869,125 @@ def test_Solving_Poly_11():
 #     print f.multiply_poly(g).printpoly()
 #     print f.multiply_poly(g).numeric_solve_poly()
 #     assert f.multiply_poly(g).numeric_solve_poly() == [4.0]
+
+
+
+
+
+
+
+
+def test_Solving_Poly_1s():
+    # Test: cannot solve quartic
+    poly = [[0, 1], [1, 1], [4, 1]]
+    f = SparsePoly(poly)
+    try:
+        f.symbolic_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve polynomials of degree 4.'
+
+
+def test_Solving_Poly_2s():
+    # Test: cannot solve degree 1000
+    poly = [[0, 1], [1, 1], [1000, 1]]
+    f = SparsePoly(poly)
+    try:
+        f.symbolic_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve polynomials of degree 1000.'
+
+
+def test_Solving_Poly_3s():
+    # Test: cannot solve constant
+    poly = [[0, 1]]
+    f = SparsePoly(poly)
+    try:
+        f.symbolic_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve constant polynomials.'
+
+
+def test_Solving_Poly_4s():
+    # Test: cannot solve zero polynomial
+    poly = [[0, 0]]
+    f = SparsePoly(poly)
+    try:
+        f.symbolic_solve_poly()
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Cannot solve constant polynomials.'
+
+def test_Solving_Poly_5s():
+    # Test: solve x+1
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.symbolic_solve_poly() == ['-1']
+
+
+def test_Solving_Poly_6s():
+    # Test: solve 2x+1
+    poly = [[0, 1], [1, 2]]
+    f = SparsePoly(poly)
+    assert f.symbolic_solve_poly() == ['-1/2']
+
+
+def test_Solving_Poly_7s():
+    # Test: solve (x-1)(x-2)
+    poly_f = [[0, -1], [1, 1]]
+    poly_g = [[0, -2], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    assert f.multiply_poly(g).symbolic_solve_poly() == ['[3±1]/2']
+
+
+def test_Solving_Poly_8s():
+    # Test: solve x^2-2
+    poly = [[0, -2], [2, 1]]
+    f = SparsePoly(poly)
+    assert f.symbolic_solve_poly() == ['[0±√[8]]/2']
+
+
+def test_Solving_Poly_9s():
+    # Test: solve (x-1)(x-1)
+    poly = [[0, -1], [1, 1]]
+    f = SparsePoly(poly)
+    assert f.multiply_poly(f).symbolic_solve_poly() == ['1']
+
+
+def test_Solving_Poly_10s():
+    # Test: solve x^2+1
+    poly = [[0, 1], [2, 1]]
+    f = SparsePoly(poly)
+    assert f.symbolic_solve_poly() == ['[0±√[-4]]/2']
+
+
+# TODO: We need to do better simplification so we can improve above
+# tests and these ones below
+
+
+# def test_solve_quad_symbolic_1():
+#     # Test: solve quad symbolic
+#     poly = [5, 7, 1]
+#     assert solve_quad_symbolic(poly) == "[-7±√[29]]/2"
+
+
+# def test_solve_quad_symbolic_2():
+#     # Test: solve quad symbolic
+#     poly = [15, -8, 1]
+#     assert solve_quad_symbolic(poly) == "[8±√[4]]/2"
+
+
+# def test_solve_quad_symbolic_3():
+#     # Test: solve quad symbolic - discriminant zero
+#     poly = [2, 4, 2]
+#     assert solve_quad_symbolic(poly) == "1"
+
+
+# def test_solve_quad_symbolic_4():
+#     # Test: solve quad symbolic - negative discriminant
+#     poly = [2, 4, 4]
+#     assert solve_quad_symbolic(poly) == "[-4±√[-16]]/8"
 

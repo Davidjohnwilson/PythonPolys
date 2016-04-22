@@ -3,6 +3,7 @@ from __future__ import division
 
 # Polynomial classes
 from math import pow
+from math import sqrt
 
 
 # General Polynomial Class
@@ -29,7 +30,7 @@ class DensePoly(Polynomial):
         if len(coeffs) == 0:
             raise Exception('Not a valid polynomial')
         for i in coeffs:
-            if not type(i) is int:
+            if not type(i) in (int, float):
                 raise Exception('Not a valid polynomial')
 
         tmp_coeffs = coeffs
@@ -93,20 +94,17 @@ class DensePoly(Polynomial):
                 polyarr.append([i, self.coeffs[i]])
         return SparsePoly(polyarr)
 
-# print("f = DensePoly([3,2,5]):")
-# f = DensePoly([3,2,5])
-# print(f.degree())
-# print(f.printpoly())
-# print(f.evalpoly(2))
 
 # Sparse Poly
-
+# We store polynomials in a sparse format - an array of
+# arrays of the form [exponent, coefficient]
 
 class SparsePoly(Polynomial):
-    'Polynomials stored in a sparse manner'
+    'Polynomials stored in a sparse manner ([exp, coeff])'
     coeffpairs = []
 
     def __init__(self, coeffpairs):
+        # Check for validity when initializing polynomial
         if not type(coeffpairs) is list:
             raise Exception('Not a valid polynomial')
         if len(coeffpairs) == 0:
@@ -115,11 +113,29 @@ class SparsePoly(Polynomial):
             if not type(l) is list:
                 raise Exception('Not a valid polynomial')
             for i in l:
-                if not type(i) is int:
+                if not type(i) in (int, float):
                     raise Exception('Not a valid polynomial')
             if l[0] < 0:
                 raise Exception('Not a valid polynomial')
-        self.coeffpairs = sorted(coeffpairs, key=lambda x: x[0])
+
+        # We simplify the coefficients. This combines any coefficients
+        # for the same degree.
+        coeff_dict = {}
+        for c in coeffpairs:
+            if c[0] in coeff_dict:
+                coeff_dict[c[0]] += c[1]
+            else:
+                coeff_dict[c[0]] = c[1]
+        new_coeffs = []
+        for k in coeff_dict:
+            if coeff_dict[k] != 0:
+                new_coeffs.append([k, coeff_dict[k]])
+        if len(new_coeffs) == 0:
+            new_coeffs = [[0, 0]]
+        # We sort the coeffs - this is partly to print nicely and
+        # it can also save some time in evaluating due to storing
+        # the previously computed power.
+        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
 
     def degree(self):
         # to check degree we look for largest degree
@@ -130,22 +146,28 @@ class SparsePoly(Polynomial):
             return -1
 
     def printpoly(self, variable='x'):
-        # print polynomial
+        # print polynomial in reverse order
         polyarr = []
         for c in reversed(self.coeffpairs):
-
             if c[0] == 0:
-                polyarr.append(str(c[1]))
+                # We treat the constant term separately
+                if c[1] == 1.0:
+                    polyarr.append('1')
+                elif c[1] == -1.0:
+                    polyarr.append('-1')
+                else:
+                    polyarr.append(str(c[1]))
             elif c[0] == 1:
-                if c[1] == 1:
+                # We treat the single exponent term separately
+                if c[1] == 1 or c[1] == 1.0:
                     polyarr.append(variable)
-                elif c[1] == -1:
+                elif c[1] == -1 or c[1] == -1.0:
                     polyarr.append('-' + variable)
                 else:
                     polyarr.append(str(c[1]) + variable)
-            elif c[1] == 1:
+            elif c[1] == 1 or c[1] == 1.0:
                 polyarr.append(variable + '^' + str(c[0]))
-            elif c[1] == -1:
+            elif c[1] == -1 or c[1] == -1.0:
                 polyarr.append('-' + variable + '^' + str(c[0]))
             else:
                 polyarr.append(str(c[1]) + variable + '^' + str(c[0]))
@@ -154,7 +176,8 @@ class SparsePoly(Polynomial):
     def evalpoly(self, x):
         # naive evaluation
         # We store partial power values to try and save on computation
-        # Much quicker when powers in ascending order
+        # Much quicker when powers in ascending order which should be
+        # expected from initializing.
         val = 0
         current_pow = 0
         current_pow_val = 1
@@ -176,6 +199,8 @@ class SparsePoly(Polynomial):
         return DensePoly(polyarr)
 
     def simplify_poly(self):
+        # This function simplifies a polynomial down
+        # in particular if any term has a zero coefficient
         coeffs = self.coeffpairs
         coeff_dict = {}
         for c in coeffs:
@@ -189,11 +214,190 @@ class SparsePoly(Polynomial):
                 new_coeffs.append([k, coeff_dict[k]])
         if len(new_coeffs) == 0:
             new_coeffs = [[0, 0]]
-        self.coeffpairs = sorted(new_coeffs, key=lambda x: x[0])
+        return SparsePoly(sorted(new_coeffs, key=lambda x: x[0]))
 
+    def simplify_poly_inplace(self):
+        # This function works like simplify_poly but does so
+        # in place.
+        h = self.simplify_poly()
+        self.coeffpairs = h.coeffpairs
 
-# print("g = SparsePoly([[0,3],[1,5],[6,7]])")
-# g = SparsePoly([[0,3],[1,5],[6,7]])
-# print(g.degree())
-# print(g.printpoly())
-# print(g.evalpoly(2))
+    def add_poly(self, g):
+        # We allow for DensePoly by converting
+        # Addition is simply appending two arrays and simplify
+        poly_two = g
+        if type(poly_two) is DensePoly:
+            poly_two = poly_two.to_sparse_poly()
+        return SparsePoly(self.coeffpairs + g.coeffpairs).simplify_poly()
+
+    def negate_poly(self):
+        # Negating a polynomial is just negating coefficients
+        # Note we have to create a new array to avoid changing
+        # coeffpairs inplace.
+        coeffs = []
+        for c in self.coeffpairs:
+            coeffs.append([c[0], -c[1]])
+        return SparsePoly(coeffs)
+
+    def subtract_poly(self, g):
+        # To subtract we negate and add
+        return self.add_poly(g.negate_poly()).simplify_poly()
+
+    def multiply_poly(self, g):
+        # Multiplying is done my combining lists and simplifying
+        coeffs = self.coeffpairs
+        g_coeffs = g.coeffpairs
+        mult_coeffs = [[f_c[0] + g_c[0], f_c[1] * g_c[1]]
+                       for f_c in coeffs for g_c in g_coeffs]
+        return SparsePoly(mult_coeffs).simplify_poly()
+
+    def differentiate_poly(self):
+        # To differentiate we just alter each coefficient
+        coeffs = self.coeffpairs
+        diff_coeffs = []
+        for c in coeffs:
+            if c[0] != 0:
+                diff_coeffs.append([c[0] - 1, c[0] * c[1]])
+        if len(diff_coeffs) == 0:
+            diff_coeffs = [[0, 0]]
+        return SparsePoly(diff_coeffs)
+
+    def integrate_poly(self, C=0):
+        # We allow for an arbitrary choice of integration constant (default 0)
+        # Note we also end up with non-integer coefficients
+        coeffs = self.coeffpairs
+        int_coeffs = []
+        if C != 0:
+            int_coeffs.append([0, C])
+        for c in coeffs:
+            int_coeffs.append([c[0] + 1, 1.0 * c[1] / (c[0] + 1)])
+        return SparsePoly(int_coeffs)
+
+    def definite_integral(self, a, b):
+        # To compute the definite integral we just combine integration
+        # and evaluation.
+        return (self.integrate_poly().evalpoly(b) -
+                self.integrate_poly().evalpoly(a))
+
+    def numeric_solve_poly(self):
+        # Solves polynomial and returns a list of real solutions
+        if self.degree() < 1:
+            # Note that <1 includes zero polynomial
+            raise Exception('Cannot solve constant polynomials.')
+        elif self.degree() > 3:
+            raise Exception('Cannot solve polynomials of degree %i.'
+                            % self.degree())
+
+        # linear polynomials
+        if self.degree() == 1:
+            a = 0
+            b = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 1:
+                    a = c_p[1]
+                elif c_p[0] == 0:
+                    b = c_p[1]
+            return [1.0 * (-b) / a]
+
+        # quadratic polynomials
+        if self.degree() == 2:
+            a = 0
+            b = 0
+            c = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 2:
+                    a = c_p[1]
+                elif c_p[0] == 1:
+                    b = c_p[1]
+                elif c_p[0] == 0:
+                    c = c_p[1]
+
+            # Note that as degree==2 we know a != 0
+
+            discrim = b * b - 4 * a * c
+
+            if discrim == 0:
+                return [1.0 * -b / (2 * a)]
+            elif discrim > 0:
+                return sorted([(1.0 * -b + sqrt(discrim)) / (2 * a),
+                               (1.0 * -b - sqrt(discrim)) / (2 * a)])
+            else:
+                return []
+
+        # cubic polynomials
+        if self.degree() == 3:
+            a = 0
+            b = 0
+            c = 0
+            d = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 3:
+                    a = c_p[1]
+                elif c_p[0] == 2:
+                    b = c_p[1]
+                elif c_p[0] == 1:
+                    c = c_p[1]
+                elif c_p[0] == 0:
+                    d = c_p[1]
+            p = 1.0 * -b / (3 * a)
+            q = 1.0 * p * p * p + ((b * c - 3 * a * d) / (6 * a * a))
+            r = 1.0 * c / (3 * a)
+            x = pow(q + sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + \
+                pow(q - sqrt(q ** 2 + pow((r - p ** 2), 1)), 1 / 3.0) + p
+            return [x]
+
+    def symbolic_solve_poly(self):
+        # Solves polynomial symbolically and returns a list of strings
+        # representing real solutions
+        if self.degree() < 1:
+            # Note that <1 includes zero polynomial
+            raise Exception('Cannot solve constant polynomials.')
+        elif self.degree() > 3:
+            raise Exception('Cannot solve polynomials of degree %i.'
+                            % self.degree())
+
+        # linear polynomials
+        if self.degree() == 1:
+            a = 0
+            b = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 1:
+                    a = c_p[1]
+                elif c_p[0] == 0:
+                    b = c_p[1]
+            if b >= a and b % a == 0:
+                return [str(int(-b / a))]
+            else:
+                return ['%i/%i' % (-b, a)]
+
+        # quadratic polynomials
+        if self.degree() == 2:
+            a = 0
+            b = 0
+            c = 0
+            for c_p in self.coeffpairs:
+                if c_p[0] == 2:
+                    a = c_p[1]
+                elif c_p[0] == 1:
+                    b = c_p[1]
+                elif c_p[0] == 0:
+                    c = c_p[1]
+
+            # Note that as degree==2 we know a != 0
+            discrim = b * b - 4 * a * c
+
+            if discrim == 0:
+                if b % (2 * a) == 0:
+                    return ['%i' % int(-b / (2 * a))]
+                else:
+                    return ['%i/%i' % (-b, (2 * a))]
+            elif discrim > 0:
+
+                # Square root exact
+                if sqrt(discrim) == int(sqrt(discrim)):
+                    return ['[%i±%i]/%i' % (-b, sqrt(discrim), 2 * a)]
+
+                # Not exact
+                return ['[%i±√[%i]]/%i' % (-b, discrim, 2 * a)]
+            else:
+                return ['[%i±√[%i]]/%i' % (-b, discrim, 2 * a)]

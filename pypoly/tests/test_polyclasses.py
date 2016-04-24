@@ -271,7 +271,6 @@ def test_SparsePoly_13():
     f = SparsePoly(poly)
     assert f.coeffpairs == [[0, 0]]
 
-
 def test_SparsePoly_14():
     # Test: x+1 degree
     poly = [[0, 1], [1, 1]]
@@ -478,6 +477,57 @@ def test_SparsePoly_41():
 
 
 def test_SparsePoly_42():
+    # Test: Equal polynomial
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    g = SparsePoly(poly)
+    assert f.equal_poly(g)
+
+
+def test_SparsePoly_43():
+    # Test: Equal polynomial
+    poly_f = [[0, 1], [1, 1]]
+    poly_g = [[0, 2], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    assert not f.equal_poly(g)
+
+
+def test_SparsePoly_44():
+    # Test: Not equal polynomial
+    poly = [[0, 1], [1, 1]]
+    f = SparsePoly(poly)
+    g = SparsePoly(poly)
+    assert not f.not_equal_poly(g)
+
+
+def test_SparsePoly_45():
+    # Test: Not equal polynomial
+    poly_f = [[0, 1], [1, 1]]
+    poly_g = [[0, 2], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    assert f.not_equal_poly(g)
+
+
+def test_SparsePoly_46():
+    # Test: Copy polynomial
+    poly_f = [[0, 1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = f.copy_poly()
+    assert f.equal_poly(g)
+
+
+def test_SparsePoly_47():
+    # Test: Copy polynomial
+    poly_f = [[0, 1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = f.copy_poly()
+    f.coeffpairs[0][0] += 1
+    assert f.not_equal_poly(g)
+
+
+def test_SparsePoly_48():
     # Test: add x+1 to itself
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
@@ -485,7 +535,7 @@ def test_SparsePoly_42():
     assert f.add_poly(g).printpoly() == '2x+2'
 
 
-def test_SparsePoly_43():
+def test_SparsePoly_49():
     # Test: add x+1 to -x-1
     poly_f = [[0, 1], [1, 1]]
     poly_g = [[0, -1], [1, -1]]
@@ -494,7 +544,7 @@ def test_SparsePoly_43():
     assert f.add_poly(g).printpoly() == '0'
 
 
-def test_SparsePoly_44():
+def test_SparsePoly_50():
     # Test: add x^100+1 to x^101-1 itself
     poly_f = [[0, 1], [100, 1]]
     poly_g = [[0, -1], [101, 1]]
@@ -503,7 +553,7 @@ def test_SparsePoly_44():
     assert f.add_poly(g).printpoly() == 'x^101+x^100'
 
 
-def test_SparsePoly_45():
+def test_SparsePoly_51():
     # Test: add two bigger polys
     poly_f = [[0, 1], [2, 1], [3, 2], [4, -1]]
     poly_g = [[0, -1], [3, 5], [4, 4], [5, 2]]
@@ -513,7 +563,7 @@ def test_SparsePoly_45():
 
 
 
-def test_SparsePoly_46():
+def test_SparsePoly_52():
     # Test: add zero polynomial
     poly_f = [[0, 1], [1, 1]]
     poly_g = [[0, 0]]
@@ -522,28 +572,28 @@ def test_SparsePoly_46():
     assert f.add_poly(g).printpoly() == 'x+1'
 
 
-def test_SparsePoly_47():
+def test_SparsePoly_53():
     # Test: Negate x+1
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.negate_poly().printpoly() == '-x-1'
 
 
-def test_SparsePoly_48():
+def test_SparsePoly_54():
     # Test: Negate -1
     poly = [[0, -1]]
     f = SparsePoly(poly)
     assert f.negate_poly().printpoly() == '1'
 
 
-def test_SparsePoly_49():
+def test_SparsePoly_55():
     # Test: Negate -1
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert f.negate_poly().printpoly() == '0'
 
 
-def test_SparsePoly_50():
+def test_SparsePoly_56():
     # Test: Subtract x+1 from x^2+x+1
     poly_f = [[0, 1], [1, 1], [2, 1]]
     poly_g = [[0, 1], [1, 1]]
@@ -552,7 +602,7 @@ def test_SparsePoly_50():
     assert f.subtract_poly(g).printpoly() == 'x^2'
 
 
-def test_SparsePoly_51():
+def test_SparsePoly_57():
     # Test: Subtract x^2+x+1 from x+1
     poly_f = [[0, 1], [1, 1]]
     poly_g = [[0, 1], [1, 1], [2, 1]]
@@ -561,7 +611,7 @@ def test_SparsePoly_51():
     assert f.subtract_poly(g).printpoly() == '-x^2'
 
 
-def test_SparsePoly_51():
+def test_SparsePoly_58():
     # Test: Subtract zero poly from x+1
     poly_f = [[0, 1], [1, 1]]
     poly_g = [[0, 0]]
@@ -570,7 +620,7 @@ def test_SparsePoly_51():
     assert f.subtract_poly(g).printpoly() == 'x+1'
 
 
-def test_SparsePoly_52():
+def test_SparsePoly_59():
     # Test: Subtract from zero equals negation
     poly_f = [[0, 1], [1, 1]]
     poly_g = [[0, 0]]
@@ -579,7 +629,7 @@ def test_SparsePoly_52():
     assert g.subtract_poly(f).printpoly() == f.negate_poly().printpoly()
 
 
-def test_SparsePoly_53():
+def test_SparsePoly_60():
     # Test: Multiply x+1 and x^2+x+1
     poly_f = [[0, 1], [1, 1], [2, 1]]
     poly_g = [[0, 1], [1, 1]]
@@ -588,7 +638,7 @@ def test_SparsePoly_53():
     assert f.multiply_poly(g).printpoly() == 'x^3+2x^2+2x+1'
 
 
-def test_SparsePoly_54():
+def test_SparsePoly_61():
     # Test: Multiply x^2x+1 and 1
     poly_f = [[0, 1], [1, 1], [2, 1]]
     poly_g = [[0, 1]]
@@ -597,7 +647,7 @@ def test_SparsePoly_54():
     assert f.multiply_poly(g).printpoly() == f.printpoly()
 
 
-def test_SparsePoly_55():
+def test_SparsePoly_62():
     # Test: Multiply by -1 equalling negation
     poly_f = [[0, 1], [1, 1], [2, 1]]
     poly_g = [[0, -1]]
@@ -606,7 +656,7 @@ def test_SparsePoly_55():
     assert f.multiply_poly(g).printpoly() == f.negate_poly().printpoly()
 
 
-def test_SparsePoly_56():
+def test_SparsePoly_63():
     # Test: Multiply by 0 equalling zero poly
     poly_f = [[0, 1], [1, 1], [2, 1]]
     poly_g = [[0, 0]]
@@ -615,77 +665,130 @@ def test_SparsePoly_56():
     assert f.multiply_poly(g).printpoly() == '0'
 
 
-def test_SparsePoly_57():
+def test_SparsePoly_64():
+    # Test: Divide x^2 - 1 by 0
+    poly_f = [[0, -1], [2, 1]]
+    poly_g = [[0, 0]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    q, r = f.divide_poly(g)
+    assert q.printpoly() == '0'
+    assert r.printpoly() == 'x^2-1'
+
+
+def test_SparsePoly_65():
+    # Test: Divide x^2 - 1 by itself
+    poly_f = [[0, -1], [2, 1]]
+    f = SparsePoly(poly_f)
+    g = f.copy_poly()
+    q, r = f.divide_poly(g)
+    assert q.printpoly() == '1'
+    assert r.printpoly() == '0'
+
+
+def test_SparsePoly_66():
+    # Test: Divide x^2 - 1 by x-1
+    poly_f = [[0, -1], [2, 1]]
+    poly_g = [[0, -1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    q, r = f.divide_poly(g)
+    assert q.printpoly() == 'x+1'
+    assert r.printpoly() == '0'
+
+
+def test_SparsePoly_67():
+    # Test: Divide x^2 - 1 by x+12
+    poly_f = [[0, -1], [2, 1]]
+    poly_g = [[0, 12], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    q, r = f.divide_poly(g)
+    assert q.printpoly() == 'x-12.0'
+    assert r.printpoly() == '143.0'
+
+
+def test_SparsePoly_68():
+    # Test: Divide 3x^5 + 2x^4 + x^2 - 1 by x^2+12
+    poly_f = [[0, -1], [2, 1], [4, 2], [5, 3]]
+    poly_g = [[0, 12], [2, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    q, r = f.divide_poly(g)
+    assert q.printpoly() == '3.0x^3+2.0x^2-36.0x-23.0'
+    assert r.printpoly() == '432.0x+275.0'
+
+
+def test_SparsePoly_69():
     # Test: Differentiate 3x^2+x+1 
     poly = [[0, 1], [1, 1], [2, 3]]
     f = SparsePoly(poly)
     assert f.differentiate_poly().printpoly() == '6x+1'
 
 
-def test_SparsePoly_58():
+def test_SparsePoly_70():
     # Test: Differentiate 1 
     poly = [[0, 1]]
     f = SparsePoly(poly)
     assert f.differentiate_poly().printpoly() == '0'
 
 
-
-def test_SparsePoly_59():
+def test_SparsePoly_71():
     # Test: Differentiate 0
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert f.differentiate_poly().printpoly() == '0'
 
 
-def test_SparsePoly_60():
+def test_SparsePoly_72():
     # Test: Integrate x+1 
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.integrate_poly().printpoly() == '0.5x^2+x'
 
 
-def test_SparsePoly_61():
+def test_SparsePoly_73():
     # Test: Integrate x+1 with constant
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.integrate_poly(10).printpoly() == '0.5x^2+x+10'
 
 
-def test_SparsePoly_62():
+def test_SparsePoly_74():
     # Test: Integrate 0 
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert f.integrate_poly().printpoly() == '0'
 
 
-def test_SparsePoly_63():
+def test_SparsePoly_75():
     # Test: Integrate 0 with constant
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert f.integrate_poly(10).printpoly() == '10'
 
-def test_SparsePoly_64():
+def test_SparsePoly_76():
     # Test: Definite integral x+1 
     poly = [[0, 1], [1, 1]]
     f = SparsePoly(poly)
     assert f.definite_integral(10, 15) == 67.5
 
 
-def test_SparsePoly_65():
+def test_SparsePoly_77():
     # Test: Definite integral x^2+x+1 
     poly = [[0, 1], [1, 1], [2, 1]]
     f = SparsePoly(poly)
     assert "%.1f" % f.definite_integral(0, 50) == '42966.7'
 
 
-def test_SparsePoly_66():
+def test_SparsePoly_78():
     # Test: Definite integral 0 
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert f.definite_integral(0, 50) == 0
 
 
-def test_SparsePoly_67():
+def test_SparsePoly_79():
     # Test: Definite integral with floats 
     poly = [[0, 1]]
     f = SparsePoly(poly)

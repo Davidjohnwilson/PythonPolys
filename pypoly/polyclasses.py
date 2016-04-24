@@ -222,6 +222,19 @@ class SparsePoly(Polynomial):
         h = self.simplify_poly()
         self.coeffpairs = h.coeffpairs
 
+    def equal_poly(self, g):
+        f_s = self.simplify_poly()
+        g_s = g.simplify_poly()
+        return f_s.coeffpairs == g_s.coeffpairs
+
+    def not_equal_poly(self, g):
+        f_s = self.simplify_poly()
+        g_s = g.simplify_poly()
+        return f_s.coeffpairs != g_s.coeffpairs
+
+    def copy_poly(self):
+        return SparsePoly(self.coeffpairs)
+
     def add_poly(self, g):
         # We allow for DensePoly by converting
         # Addition is simply appending two arrays and simplify
@@ -250,6 +263,31 @@ class SparsePoly(Polynomial):
         mult_coeffs = [[f_c[0] + g_c[0], f_c[1] * g_c[1]]
                        for f_c in coeffs for g_c in g_coeffs]
         return SparsePoly(mult_coeffs).simplify_poly()
+
+    def divide_poly(self, g):
+        # We compute f/g and return an array [q,r] such that
+        #        f = q*g + r
+
+        # Initialize with q = 0, r = f
+        q = SparsePoly([[0, 0]])
+        r = self.copy_poly()
+
+        # First check if g == 0
+        zero_poly = SparsePoly([[0, 0]])
+        if g.equal_poly(zero_poly):
+            return [q, r]
+
+        g_degree = g.degree()
+
+        while r.not_equal_poly(zero_poly) and r.degree() >= g_degree:
+            t_term = [r.coeffpairs[-1][0] - g.coeffpairs[-1][0],
+                      1.0 * r.coeffpairs[-1][1] / g.coeffpairs[-1][1]]
+            t = SparsePoly([t_term])
+            q = q.add_poly(t)
+            s = t.multiply_poly(g)
+            r = r.subtract_poly(s)
+
+        return [q, r]
 
     def differentiate_poly(self):
         # To differentiate we just alter each coefficient

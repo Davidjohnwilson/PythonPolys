@@ -615,6 +615,27 @@ def test_SparsePoly_56():
     assert f.multiply_poly(g).printpoly() == '0'
 
 
+def test_SparsePoly_56aaaaa():
+    # Test: Divide x^2 - 1 by x-1
+    poly_f = [[0, -1], [2, 1]]
+    poly_g = [[0, -1], [1, 1]]
+    f = SparsePoly(poly_f)
+    g = SparsePoly(poly_g)
+    q, r = f.divide_poly(g)
+    print q.printpoly()
+    print r.printpoly()
+    assert q.printpoly() == 'x+1'
+    assert r.printpoly() == '0'
+
+
+
+
+
+
+
+
+
+
 def test_SparsePoly_57():
     # Test: Differentiate 3x^2+x+1 
     poly = [[0, 1], [1, 1], [2, 3]]

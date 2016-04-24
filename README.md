@@ -37,10 +37,14 @@ The following methods are defined for an instance of `SparsePoly`:
 * `to_dense_poly()`
 * `simplify_poly()`
 * `simplify_poly_inplace()`
+* `equal_poly()`
+* `not_equal_poly()`
+* `copy_poly()`
 * `add_poly()`
 * `negate_poly()`
 * `subtract_poly()`
 * `multiply_poly()`
+* `divide_poly()`
 * `differentiate_poly()`
 * `integrate_poly()`
 * `definite_integral(a, b)`

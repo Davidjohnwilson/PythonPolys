@@ -51,7 +51,7 @@ class DensePoly(Polynomial):
         else:
             return n - 1
 
-    def printpoly(self, variable='x'):
+    def print_poly(self, variable='x'):
         # Printing polynomial with placeholder 'x'
         polyarr = []
         dummy_variable = variable
@@ -145,7 +145,7 @@ class SparsePoly(Polynomial):
         else:
             return -1
 
-    def printpoly(self, variable='x'):
+    def print_poly(self, variable='x'):
         # print polynomial in reverse order
         polyarr = []
         for c in reversed(self.coeffpairs):

@@ -136,7 +136,7 @@ def test_DensePoly_17():
     poly = [1, 1]
     val = 3
     f = DensePoly(poly)
-    assert f.evalpoly(val) == 4
+    assert f.eval_poly(val) == 4
 
 
 def test_DensePoly_18():
@@ -144,7 +144,7 @@ def test_DensePoly_18():
     poly = [1, 2, 1]
     val = 3
     f = DensePoly(poly)
-    assert f.evalpoly(val) == 16
+    assert f.eval_poly(val) == 16
 
 
 def test_DensePoly_19():
@@ -152,7 +152,7 @@ def test_DensePoly_19():
     poly = [0]
     val = 3
     f = DensePoly(poly)
-    assert f.evalpoly(val) == 0
+    assert f.eval_poly(val) == 0
 
 
 def test_DensePoly_20():
@@ -160,7 +160,7 @@ def test_DensePoly_20():
     poly = [-1, 0, 0, 0, 0, 0, 0, 0, -6, 1, 1]
     val = 3
     f = DensePoly(poly)
-    assert f.evalpoly(val) == 39365
+    assert f.eval_poly(val) == 39365
 
 
 # ==================================
@@ -395,7 +395,7 @@ def test_SparsePoly_31():
     poly = [[0, 1], [1, 1]]
     val = 3
     f = SparsePoly(poly)
-    assert f.evalpoly(val) == 4
+    assert f.eval_poly(val) == 4
 
 
 def test_SparsePoly_32():
@@ -403,7 +403,7 @@ def test_SparsePoly_32():
     poly = [[0, 1], [1, 2], [2, 1]]
     val = 3
     f = SparsePoly(poly)
-    assert f.evalpoly(val) == 16
+    assert f.eval_poly(val) == 16
 
 
 def test_SparsePoly_33():
@@ -411,7 +411,7 @@ def test_SparsePoly_33():
     poly = [[0, 1], [1, 2], [2, 1]]
     val = 1.5
     f = SparsePoly(poly)
-    assert f.evalpoly(val) == 6.25
+    assert f.eval_poly(val) == 6.25
 
 
 def test_SparsePoly_34():
@@ -419,7 +419,7 @@ def test_SparsePoly_34():
     poly = [[0, 0]]
     val = 3
     f = SparsePoly(poly)
-    assert f.evalpoly(val) == 0
+    assert f.eval_poly(val) == 0
 
 
 def test_SparsePoly_35():
@@ -427,7 +427,7 @@ def test_SparsePoly_35():
     poly = [[0, -1], [8, -6], [9, 1], [10, 1]]
     val = 3
     f = SparsePoly(poly)
-    assert f.evalpoly(val) == 39365
+    assert f.eval_poly(val) == 39365
 
 
 def test_SparsePoly_36():

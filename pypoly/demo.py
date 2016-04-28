@@ -44,6 +44,8 @@ print("some of their methods.")
 
 press_enter()
 
+print(full_line)
+
 print("The DensePoly is a dense representation of polynomials. This")
 print("means you simply list the coefficients of ascending powers  ")
 print("of the polynomial.                                          ")
@@ -107,5 +109,64 @@ print("   > [isinstance(f, DensePoly), isinstance(g, SparsePoly)]     ")
 print("              " + str([isinstance(f, DensePoly), isinstance(g, SparsePoly)]))
 print("   > [f.print_poly(), g.print_poly()]                          ")
 print("              " + str([f.print_poly(), g.print_poly()]))
+
+press_enter()
+
+print(full_line)
+
+print("We will now focus primarily on SparsePoly objects as they have ")
+print("greater functionality.")
+
+press_enter()
+
+print("One of the most fundamental properties of a polynomial is its  ")
+print("degree, which can be found using the function of the same name.")
+print("   > f = SparsePoly([[0, 1], [3, 5]])                          ")
+f = SparsePoly([[0, 1], [3, 5]])
+print("   > f.print_poly()                                            ")
+print("              " + f.print_poly())
+print("   > f.degree()                                                ")
+print("              " + str(f.degree()))
+print("   > f = SparsePoly([[0, 1], [100, 5], [1000, 10]])            ")
+f = SparsePoly([[0, 1], [100, 5], [1000, 10]]) 
+print("   > f.print_poly()                                            ")
+print("              " + f.print_poly())
+print("   > f.degree()                                                ")
+print("              " + str(f.degree()))
+
+press_enter()
+
+print("We can also evaluate a polynomial at any value. This is done   ")
+print("with the eval_poly(x) function. Note that this method uses the ")
+print("fact that the terms are in increasing order of power to reduce ")
+print("computation, storing and using the previously computed power.  ")
+print("   > f = SparsePoly([[0, 1], [3, -5], [5, 1]])                 ")
+f = SparsePoly([[0, 1], [3, -5], [5, 1]])
+print("   > f.print_poly()                                            ")
+print("              " + f.print_poly())
+print("   > f.eval_poly(1)                                            ")
+print("              " + str(f.eval_poly(1)))
+print("   > f.eval_poly(10)                                          ")
+print("              " + str(f.eval_poly(100)))
+
+press_enter()
+
+print("Basic operations: negate, add, subtract, multiply")
+
+press_enter()
+
+print("Division")
+
+press_enter()
+
+print("Differentiation, Integration, Definite integration")
+
+press_enter()
+
+print("Numeric Solve")
+
+press_enter()
+
+print("Symbolic solve")
 
 print(full_line)

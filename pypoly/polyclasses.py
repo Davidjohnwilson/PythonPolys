@@ -78,7 +78,7 @@ class DensePoly(Polynomial):
             polyarr.append(str(self.coeffs[0]))
         return '+'.join(polyarr).replace('+-', '-')
 
-    def evalpoly(self, x):
+    def eval_poly(self, x):
         # Let's use Horner!
         n = len(self.coeffs)
         val = self.coeffs[n - 1]
@@ -173,7 +173,7 @@ class SparsePoly(Polynomial):
                 polyarr.append(str(c[1]) + variable + '^' + str(c[0]))
         return '+'.join(polyarr).replace('+-', '-')
 
-    def evalpoly(self, x):
+    def eval_poly(self, x):
         # naive evaluation
         # We store partial power values to try and save on computation
         # Much quicker when powers in ascending order which should be
@@ -314,8 +314,8 @@ class SparsePoly(Polynomial):
     def definite_integral(self, a, b):
         # To compute the definite integral we just combine integration
         # and evaluation.
-        return (self.integrate_poly().evalpoly(b) -
-                self.integrate_poly().evalpoly(a))
+        return (self.integrate_poly().eval_poly(b) -
+                self.integrate_poly().eval_poly(a))
 
     def numeric_solve_poly(self):
         # Solves polynomial and returns a list of real solutions

@@ -917,6 +917,12 @@ def test_Solving_Poly_6():
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == [-0.5]
 
+def test_Solving_Poly_66():
+    # Test: solve -2x+1
+    poly = [[0, 1], [1, -2]]
+    f = SparsePoly(poly)
+    assert f.numeric_solve_poly() == [0.5]
+
 
 def test_Solving_Poly_7():
     # Test: solve (x-1)(x-2)
@@ -1035,6 +1041,13 @@ def test_Solving_Poly_6s():
     poly = [[0, 1], [1, 2]]
     f = SparsePoly(poly)
     assert f.symbolic_solve_poly() == ['-1/2']
+
+# TODO - fix this!
+def test_Solving_Poly_6ss():
+    # Test: solve -2x+1
+    poly = [[0, 1], [1, -2]]
+    f = SparsePoly(poly)
+    assert f.symbolic_solve_poly() == ['-1/-2']
 
 
 def test_Solving_Poly_7s():

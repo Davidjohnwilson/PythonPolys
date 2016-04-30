@@ -672,8 +672,8 @@ def test_SparsePoly_64():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     q, r = f.divide_poly(g)
-    assert q.printpoly() == '0'
-    assert r.printpoly() == 'x^2-1'
+    assert q.print_poly() == '0'
+    assert r.print_poly() == 'x^2-1'
 
 
 def test_SparsePoly_65():
@@ -682,8 +682,8 @@ def test_SparsePoly_65():
     f = SparsePoly(poly_f)
     g = f.copy_poly()
     q, r = f.divide_poly(g)
-    assert q.printpoly() == '1'
-    assert r.printpoly() == '0'
+    assert q.print_poly() == '1'
+    assert r.print_poly() == '0'
 
 
 def test_SparsePoly_66():
@@ -693,8 +693,8 @@ def test_SparsePoly_66():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     q, r = f.divide_poly(g)
-    assert q.printpoly() == 'x+1'
-    assert r.printpoly() == '0'
+    assert q.print_poly() == 'x+1'
+    assert r.print_poly() == '0'
 
 
 def test_SparsePoly_67():
@@ -704,8 +704,8 @@ def test_SparsePoly_67():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     q, r = f.divide_poly(g)
-    assert q.printpoly() == 'x-12.0'
-    assert r.printpoly() == '143.0'
+    assert q.print_poly() == 'x-12.0'
+    assert r.print_poly() == '143.0'
 
 
 def test_SparsePoly_68():
@@ -715,8 +715,8 @@ def test_SparsePoly_68():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     q, r = f.divide_poly(g)
-    assert q.printpoly() == '3.0x^3+2.0x^2-36.0x-23.0'
-    assert r.printpoly() == '432.0x+275.0'
+    assert q.print_poly() == '3.0x^3+2.0x^2-36.0x-23.0'
+    assert r.print_poly() == '432.0x+275.0'
 
 
 def test_SparsePoly_69():

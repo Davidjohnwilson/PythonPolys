@@ -38,6 +38,16 @@ def test_DensePoly_4():
     assert isinstance(f, DensePoly)
 
 
+def test_DensePoly_4a():
+    # Test: invalid polynomial
+    poly = []
+    try:
+        DensePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
 def test_DensePoly_5():
     # Test: invalid polynomial
     poly = 1
@@ -194,6 +204,26 @@ def test_SparsePoly_4():
     poly = [[0, 0]]
     f = SparsePoly(poly)
     assert isinstance(f, SparsePoly)
+
+
+def test_SparsePoly_4a():
+    # Test: invalid polynomial
+    poly=[]
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_4b():
+    # Test: invalid polynomial
+    poly = {'a': 1}
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
 
 
 def test_SparsePoly_5():
@@ -562,7 +592,6 @@ def test_SparsePoly_51():
     assert f.add_poly(g).print_poly() == '2x^5+3x^4+7x^3+x^2'
 
 
-
 def test_SparsePoly_52():
     # Test: add zero polynomial
     poly_f = [[0, 1], [1, 1]]
@@ -570,6 +599,15 @@ def test_SparsePoly_52():
     f = SparsePoly(poly_f)
     g = SparsePoly(poly_g)
     assert f.add_poly(g).print_poly() == 'x+1'
+
+
+def test_SparsePoly_52b():
+    # Test: add dense polynomial
+    poly_f = [[0, 1], [1, 1]]
+    poly_g = [1,1]
+    f = SparsePoly(poly_f)
+    g = DensePoly(poly_g)
+    assert f.add_poly(g).print_poly() == '2x+2'
 
 
 def test_SparsePoly_53():

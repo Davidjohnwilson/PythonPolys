@@ -62,10 +62,22 @@ def test_disppoly_1():
     assert disppoly(poly) == 'x+1'
 
 
+def test_disppoly_1a():
+    # Test: -x+1 
+    poly = [1, -1]
+    assert disppoly(poly) == '-x+1'
+
+
 def test_disppoly_2():
     # Test: x^2-1 
     poly = [-1, 0, 1]
     assert disppoly(poly) == 'x^2-1'
+
+
+def test_disppoly_2a():
+    # Test: -x^2-1 
+    poly = [-1, 0, -1]
+    assert disppoly(poly) == '-x^2-1'
 
 
 def test_disppoly_3():
@@ -185,6 +197,13 @@ def test_evalpoly_1():
     poly = [1, 1]
     val = 3
     assert evalpoly(poly, val) == 4
+
+
+def test_evalpoly_1a():
+    # Test: x+1 evaluated at 3 using basic
+    poly = [1, 1]
+    val = 3
+    assert evalpoly(poly, val, method='basic') == 4
 
 
 def test_evalpoly_2():
@@ -382,10 +401,44 @@ def test_solve_quad_symbolic_3():
     assert solve_quad_symbolic(poly) == "1"
 
 
+def test_solve_quad_symbolic_3a():
+    # Test: solve quad symbolic - discriminant zero with division
+    poly = [1, 4, 4]
+    assert solve_quad_symbolic(poly) == "4/8"
+
+
 def test_solve_quad_symbolic_4():
     # Test: solve quad symbolic - negative discriminant
     poly = [2, 4, 4]
     assert solve_quad_symbolic(poly) == "[-4±√[-16]]/8"
+
+
+def test_solve_quad_symbolic_4():
+    # Test: solve quad symbolic - negative discriminant
+    poly = [1, 4, 1]
+    assert solve_quad_symbolic(poly) == "[-4±√[12]]/2"
+
+
+def test_solve_quad_symbolic_5():
+    # Test: solve quadratic without a quadratic
+    poly = [2, 4, 4, 5, 1]
+
+    try:
+        solve_quad_symbolic(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a quadratic polynomial'
+
+
+def test_solve_quad_symbolic_6():
+    # Test: solve quadratic without a quadratic
+    poly = [2, 4]
+
+    try:
+        solve_quad_symbolic(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a quadratic polynomial'
 
 # ==================================
 # Test suite 10: solve_quad_numeric
@@ -415,6 +468,29 @@ def test_solve_quad_numeric_4():
     # Test: solve quad numeric - negative discriminant
     poly = [2, 4, 4]
     assert solve_quad_numeric(poly) == "No Solutions"
+
+
+def test_solve_quad_numeric_5():
+    # Test: solve quadratic without a quadratic
+    poly = [2, 4, 4, 5, 1]
+
+    try:
+        solve_quad_numeric(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a quadratic polynomial'
+
+
+def test_solve_quad_numeric_6():
+    # Test: solve quadratic without a quadratic
+    poly = [2, 4]
+
+    try:
+        solve_quad_numeric(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a quadratic polynomial'
+
 
 # ==================================
 # Test suite 11: solve_cubic_numeric

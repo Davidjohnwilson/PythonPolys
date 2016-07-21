@@ -81,9 +81,9 @@ def test_disppoly_2a():
 
 
 def test_disppoly_3():
-    # Test: x^2-1  with dummy variable y
-    poly = [-1, 0, 1]
-    assert disppoly(poly,'y') == 'y^2-1'
+    # Test: x^2+2x-1  with dummy variable y
+    poly = [-1, 2, 2]
+    assert disppoly(poly,'y') == '2y^2+2y-1'
 
 
 def test_disppoly_4():

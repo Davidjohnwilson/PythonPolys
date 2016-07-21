@@ -239,7 +239,10 @@ class SparsePoly(Polynomial):
         # We allow for DensePoly by converting
         # Addition is simply appending two arrays and simplify
         poly_two = g
-        if type(poly_two) is DensePoly:
+        print(type(poly_two))
+        # Having to use this hack as not sure why it doesn't work
+        # for python 2.7
+        if poly_two.__class__.__name__ == 'DensePoly':
             poly_two = poly_two.to_sparse_poly()
         new_coeffpairs = self.coeffpairs + poly_two.coeffpairs
         return SparsePoly(new_coeffpairs).simplify_poly()

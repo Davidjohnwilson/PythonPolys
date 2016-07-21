@@ -241,7 +241,8 @@ class SparsePoly(Polynomial):
         poly_two = g
         if type(poly_two) is DensePoly:
             poly_two = poly_two.to_sparse_poly()
-        return SparsePoly(self.coeffpairs + poly_two.coeffpairs).simplify_poly()
+        new_coeffpairs = self.coeffpairs + poly_two.coeffpairs
+        return SparsePoly(new_coeffpairs).simplify_poly()
 
     def negate_poly(self):
         # Negating a polynomial is just negating coefficients

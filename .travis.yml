@@ -14,9 +14,11 @@ sudo: false
 
 python:
   - 2.7
-  - 3.3
   - 3.4
   - 3.5
+
+# - 3.3 
+# Commenting out due to Conda issue with Travis.
 
 env:
   - CONDA_DEPS="pip flake8 nose coverage numpy scipy" PIP_DEPS="coveralls"

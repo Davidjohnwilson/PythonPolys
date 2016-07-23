@@ -8,15 +8,6 @@ from math import sqrt
 #   Python Polynomial Module
 #     by David John Wilson
 
-# Implementation of polynomials in python
-if __name__ == "__main__":
-    print("---------------------------------------")
-    print("Python Polynomial Module               ")
-    print("Code by David John Wilson              ")
-    print("Email: D.J.Wilson@bath.ac.uk           ")
-    print("Last Updated: 24/08/2013               ")
-    print("---------------------------------------")
-
 # (Initially at least) we will consider a polynomial to be a list, P,
 # where P[i] is the coefficient of x^i.
 
@@ -52,8 +43,8 @@ def disppoly(poly, variable='x'):
     polyarr = []
     dummy_variable = str(variable)
     n = len(poly)
-    if n == 0:
-        return ''
+    # Note that we know n>0 due to validpoly.
+
     for i in range(1, n - 1):
         # we work backwards
         if poly[n - i] not in [0, 1, -1]:
@@ -144,12 +135,16 @@ def solve_quad_symbolic(poly):
         else:
             return str(poly[1]) + '/' + str(2 * poly[2])
 
-    test_a = (poly[2] % (2 * poly[2]) == 0)
-    test_b = (discrim % (4 * poly[2] * poly[2]) == 0)
+    test_a_1 = (abs(poly[1]) >= abs(2 * poly[2]))
+    test_a_2 = (abs(poly[1]) % abs(2 * poly[2]) == 0)
+    test_a = test_a_1 and test_a_2
+    test_b_1 = (abs(discrim) >= abs(4 * poly[2] * poly[2]))
+    test_b_2 = (abs(discrim) % abs(4 * poly[2] * poly[2]) == 0)
+    test_b = test_b_1 and test_b_2
     if test_a and test_b:
-        term1 = poly[2] / (2 * poly[2])
+        term1 = -poly[1] / (2 * poly[2])
         term2 = discrim / (4 * poly[2] * poly[2])
-        return term1 + '±' + dispsqrt(term2)
+        return str(int(term1)) + '±' + str(dispsqrt(int(term2)))
     return '[' + str(-poly[1]) + '±' + dispsqrt(int(discrim)) + ']' + \
            '/' + str(2 * poly[2])
 

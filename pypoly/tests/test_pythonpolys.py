@@ -392,7 +392,7 @@ def test_solve_quad_symbolic_1():
 def test_solve_quad_symbolic_2():
     # Test: solve quad symbolic
     poly = [15, -8, 1]
-    assert solve_quad_symbolic(poly) == "[8±√[4]]/2"
+    assert solve_quad_symbolic(poly) == "4±√[1]"
 
 
 def test_solve_quad_symbolic_3():
@@ -407,16 +407,23 @@ def test_solve_quad_symbolic_3a():
     assert solve_quad_symbolic(poly) == "4/8"
 
 
-def test_solve_quad_symbolic_4():
+def test_solve_quad_symbolic_3b():
+    # Test: solve quad symbolic - discriminant zero with division
+    poly = [4,8,2]
+    assert solve_quad_symbolic(poly) == "-2±√[2]"
+
+
+def test_solve_quad_symbolic_4a():
     # Test: solve quad symbolic - negative discriminant
     poly = [2, 4, 4]
     assert solve_quad_symbolic(poly) == "[-4±√[-16]]/8"
 
 
-def test_solve_quad_symbolic_4():
+def test_solve_quad_symbolic_4b():
     # Test: solve quad symbolic - negative discriminant
     poly = [1, 4, 1]
-    assert solve_quad_symbolic(poly) == "[-4±√[12]]/2"
+    print(solve_quad_symbolic(poly))
+    assert solve_quad_symbolic(poly) == "-2±√[3]"
 
 
 def test_solve_quad_symbolic_5():

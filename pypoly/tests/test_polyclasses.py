@@ -127,6 +127,13 @@ def test_DensePoly_14():
     assert f.print_poly() == '-x-1'
 
 
+def test_DensePoly_14b():
+    # Test: print poly -3x-1
+    poly = [-1,-3]
+    f = DensePoly(poly)
+    assert f.print_poly() == '-3x-1'
+
+
 def test_DensePoly_15():
     # Test: print poly 1
     poly = [1]
@@ -139,6 +146,36 @@ def test_DensePoly_16():
     poly = [0]
     f = DensePoly(poly)
     assert f.print_poly() == '0'
+
+def test_DensePoly_a_1():
+    # Test: x^2-1 
+    poly = [-1, 0, 1]
+    f = DensePoly(poly)
+    assert f.print_poly() == 'x^2-1'
+
+
+def test_DensePoly_a_2():
+    # Test: -x^2-1 
+    poly = [-1, 0, -1]
+    f = DensePoly(poly)
+    assert f.print_poly() == '-x^2-1'
+
+
+def test_DensePoly_a_3():
+    # Test: x^2+2x-1  with dummy variable y
+    poly = [-1, 2, 2]
+    f = DensePoly(poly)
+    assert f.print_poly() == '2x^2+2x-1'
+
+
+def test_DensePoly_a_4():
+    # Test: Bigger polynomial
+    poly = [-1, 0, 0, 0, 0, 0, 0, 0, -6, 1, 1]
+    f = DensePoly(poly)
+    assert f.print_poly() == 'x^10+x^9-6x^8-1'
+
+
+
 
 
 def test_DensePoly_17():
@@ -259,6 +296,16 @@ def test_SparsePoly_7():
 def test_SparsePoly_8():
     # Test: invalid polynomial
     poly = [[0, 1], [-1, 1]]
+    try:
+        SparsePoly(poly)
+        assert False
+    except Exception as e:
+        assert e.args[0] == 'Not a valid polynomial'
+
+
+def test_SparsePoly_8b():
+    # Test: invalid polynomial
+    poly = [0, [1, 1]]
     try:
         SparsePoly(poly)
         assert False
@@ -1006,6 +1053,20 @@ def test_Solving_Poly_12():
     f = SparsePoly(poly)
     assert f.numeric_solve_poly() == [2.0]
 
+
+def test_Solving_Poly_12a():
+    # Test: solve x^3-8
+    poly = [[0, -8], [1,-11], [3, 1]]
+    f = SparsePoly(poly)
+    assert "%.3f" % f.numeric_solve_poly()[0] == "2.746"
+
+
+def test_Solving_Poly_12b():
+    # Test: solve x^3-8
+    poly = [[0, -8], [1,-11], [2,-2], [3, 1]]
+    f = SparsePoly(poly)
+    assert "%.3f" % f.numeric_solve_poly()[0] == "3.809"
+
 # FAILING TEST
 # def test_Solving_Poly_10():
 #     # Test: solve (x^2+1)(x-4)
@@ -1109,6 +1170,14 @@ def test_Solving_Poly_9s():
     poly = [[0, -1], [1, 1]]
     f = SparsePoly(poly)
     assert f.multiply_poly(f).symbolic_solve_poly() == ['1']
+
+
+def test_Solving_Poly_9s_a():
+    # Test: solve (2x-1)(2x-1)
+    poly = [[0, -1], [1, 2]]
+    f = SparsePoly(poly)
+    assert f.multiply_poly(f).symbolic_solve_poly() == ['4/8']
+
 
 
 def test_Solving_Poly_10s():

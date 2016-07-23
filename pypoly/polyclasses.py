@@ -11,10 +11,7 @@ from math import sqrt
 
 class Polynomial:
     'Polynomials of any type'
-
-    def __init__(self):
-        pass
-
+    # Empty class currently just for inheritance.
 
 # dense polynomial
 # We store an array with all the coefficients for every degree
@@ -56,8 +53,7 @@ class DensePoly(Polynomial):
         polyarr = []
         dummy_variable = variable
         n = len(self.coeffs)
-        if n == 0:
-            return ''
+        # Note we know n>0 because of class checks
         for i in range(1, n - 1):
             # we work backwards
             if self.coeffs[n - i] not in [0, 1, -1]:
@@ -182,13 +178,15 @@ class SparsePoly(Polynomial):
         current_pow = 0
         current_pow_val = 1
         for c in self.coeffpairs:
-            if c[0] >= current_pow:
-                current_pow_val = current_pow_val * pow(x, c[0] - current_pow)
-                current_pow = c[0]
-            else:
-                current_pow_val = pow(x, c[0])
-                current_pow = c[0]
+            current_pow_val = current_pow_val * pow(x, c[0] - current_pow)
+            current_pow = c[0]
             val += c[1] * current_pow_val
+            # We have eliminated the following code
+            # if c[0] >= current_pow: *do as above*
+            # else:
+            # current_pow_val = pow(x, c[0])
+            # current_pow = c[0]
+
         return val
 
     def to_dense_poly(self):
@@ -239,7 +237,6 @@ class SparsePoly(Polynomial):
         # We allow for DensePoly by converting
         # Addition is simply appending two arrays and simplify
         poly_two = g
-        print(type(poly_two))
         # Having to use this hack as not sure why it doesn't work
         # for python 2.7
         if poly_two.__class__.__name__ == 'DensePoly':

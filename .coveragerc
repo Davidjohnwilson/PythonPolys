@@ -1,0 +1,4 @@
+[run]
+omit = 
+     pypoly/demo.py
+     pypoly/tests/*

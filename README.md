@@ -3,8 +3,8 @@
 ## David John Wilson
 
 [![Build Status](https://travis-ci.org/Davidjohnwilson/PythonPolys.svg?branch=development)](https://travis-ci.org/Davidjohnwilson/PythonPolys)
-
 [![Coverage Status](https://coveralls.io/repos/github/Davidjohnwilson/PythonPolys/badge.svg?branch=development)](https://coveralls.io/github/Davidjohnwilson/PythonPolys?branch=development)
+[![Code Health](https://landscape.io/github/Davidjohnwilson/PythonPolys/master/landscape.svg?style=flat)](https://landscape.io/github/Davidjohnwilson/PythonPolys/master)
 
 This module is intended to implement basic polynomials in python. They will be entirely symbolic computations wherever possible.
 

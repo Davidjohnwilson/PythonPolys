@@ -2,7 +2,6 @@
 from __future__ import division
 
 # We need to import some important mathematical functions
-from math import pow
 from math import sqrt
 
 #   Python Polynomial Module

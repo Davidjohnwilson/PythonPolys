@@ -2,14 +2,13 @@
 from __future__ import division
 
 # Polynomial classes
-from math import pow
 from math import sqrt
 
 
 # General Polynomial Class
 
 
-class Polynomial:
+class Polynomial(object):
     'Polynomials of any type'
     # Empty class currently just for inheritance.
 
@@ -191,7 +190,7 @@ class SparsePoly(Polynomial):
 
     def to_dense_poly(self):
         deg = self.degree()
-        polyarr = [0 for i in range(deg + 1)]
+        polyarr = [0 for _ in range(deg + 1)]
         for c in self.coeffpairs:
             polyarr[c[0]] = c[1]
         return DensePoly(polyarr)
